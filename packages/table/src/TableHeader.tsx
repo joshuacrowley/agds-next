@@ -1,6 +1,8 @@
 import { PropsWithChildren } from 'react';
-import { Box } from '@ag.ds-next/box';
+import { Box, Flex } from '@ag.ds-next/box';
 import { ResponsiveProp } from '@ag.ds-next/core';
+import { ChevronDownIcon, ChevronUpIcon } from '@ag.ds-next/icon';
+import { BaseButton } from '@ag.ds-next/button';
 
 export type TableHeaderWidthType =
 	| '10%'
@@ -54,6 +56,51 @@ export const TableHeader = ({
 			{...props}
 		>
 			{children}
+		</Box>
+	);
+};
+
+export type TableSortDirection = 'asc' | 'dsc';
+
+export const SortableTableHeader = ({
+	children,
+	textAlign = 'left',
+	width,
+	onSortChange,
+	isActivelySortedBy,
+	sortDir,
+	...props
+}: TableHeaderProps & {
+	sortDir?: TableSortDirection;
+	isActivelySortedBy?: boolean;
+	onSortChange?: (sortDirection: TableSortDirection) => void;
+}) => {
+	const Icon =
+		isActivelySortedBy && sortDir === 'asc' ? ChevronUpIcon : ChevronDownIcon;
+	return (
+		<Box
+			as="th"
+			padding={0.75}
+			focus
+			width={width}
+			css={{
+				textAlign,
+				textDecoration: 'underline',
+			}}
+			{...props}
+		>
+			<Flex
+				as={BaseButton}
+				color="action"
+				onClick={() => onSortChange(sortDir === 'asc' ? 'dsc' : 'asc')}
+				fontWeight="bold"
+				gap={0.5}
+				alignItems="center"
+				lineHeight="nospace"
+			>
+				{children}
+				{isActivelySortedBy && <Icon size="sm" weight="bold" color="action" />}
+			</Flex>
 		</Box>
 	);
 };
