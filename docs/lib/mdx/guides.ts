@@ -44,6 +44,7 @@ export async function getGuideList() {
 			getMarkdownData(guidePath(slug)).then(({ data }) => ({
 				order: data.order as number,
 				title: (data?.title ?? slug) as string,
+				description: (data.description ?? null) as string | null,
 				slug,
 			}))
 		)
@@ -64,7 +65,11 @@ function guideNavMetaData(
 export function getGuidesBreadcrumbs(slug: string) {
 	return getMarkdownData(guidePath(slug)).then(({ data }) => {
 		const meta = guideNavMetaData(slug, data);
-		return [{ href: '/guides', label: 'Guides' }, { label: meta.title }];
+		return [
+			{ href: '/', label: 'Home' },
+			{ href: '/guides', label: 'Guides' },
+			{ label: meta.title },
+		];
 	});
 }
 
