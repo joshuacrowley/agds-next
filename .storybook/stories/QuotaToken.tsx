@@ -6,7 +6,7 @@ export default {
 	title: 'Quota/QuotaToken',
 };
 
-const QuotaToken = ({
+export const QuotaToken = ({
 	market,
 	quota,
 	quotaCode,

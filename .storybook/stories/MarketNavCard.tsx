@@ -24,7 +24,10 @@ const MarketNavCard = ({ market, quotaCount, linkToMarket }) => (
 		<Card>
 			<CardHeader>
 				<Flex alignItems={'center'} gap={1}>
-					<NotificationBadge tone={'action'} value={4} />
+					<NotificationBadge
+						tone={quotaCount ? 'action' : 'neutral'}
+						value={quotaCount}
+					/>
 					<Heading type="h3">{market}</Heading>
 				</Flex>
 			</CardHeader>
@@ -45,8 +48,8 @@ const MarketNavCard = ({ market, quotaCount, linkToMarket }) => (
 
 export const Default = () => (
 	<Columns cols={{ xs: 1, md: 3, lg: 12 }}>
-		<MarketNavCard market={'United States of America'} quotaCount={6} />
-		<MarketNavCard market={'United States of America'} quotaCount={6} />
-		<MarketNavCard market={'United States of America'} quotaCount={6} />
+		<MarketNavCard market={'United States of America'} quotaCount={0} />
+		<MarketNavCard market={'United States of America'} quotaCount={8} />
+		<MarketNavCard market={'United States of America'} quotaCount={16} />
 	</Columns>
 );

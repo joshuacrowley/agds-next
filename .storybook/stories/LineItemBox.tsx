@@ -3,7 +3,7 @@ import { useTernaryState } from '@ag.ds-next/core';
 import { Button } from '../../docs/components/designSystemComponents';
 
 export default {
-	title: 'Quota/LineItemBox',
+	title: 'Quota/LineItemBox - WIP',
 };
 
 export const Example = () => {

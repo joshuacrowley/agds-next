@@ -10,7 +10,7 @@ import {
 } from '../../docs/components/designSystemComponents';
 
 export default {
-	title: 'Quota/LineItemTable',
+	title: 'Quota/LineItemTable - WIP',
 };
 
 export const Modular: ComponentStory<typeof Table> = (args) => (
