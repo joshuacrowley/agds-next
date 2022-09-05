@@ -13,12 +13,8 @@ import {
 	Table,
 	TableBody,
 	TableCell,
-	TextLink,
 	Button,
-	TableHead,
 } from '../../docs/components/designSystemComponents';
-
-import { QuotaToken } from './QuotaToken';
 
 export default {
 	title: 'Quota/RuleSetCards',

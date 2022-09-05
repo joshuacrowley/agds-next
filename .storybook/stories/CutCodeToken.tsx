@@ -16,18 +16,18 @@ export const CutCode = ({ code, preservation, suffix, removeable }) => (
 		rounded
 		paddingX={0.5}
 		fontSize="sm"
-		title={`Cut Code ${code}; preservation ${preservation || 'N/A'}; Suffix ${
-			suffix || 'N/A'
-		}`}
+		title={`Cut Code ${code}; Suffix ${suffix || null}; preservation ${
+			preservation || null
+		}; `}
 	>
 		<Flex alignItems={'center'} gap={0.1}>
 			<Text fontSize={'xs'}>{code}</Text>
 			<>
 				<Text fontSize={'xs'} fontWeight={'bold'}>
-					{preservation}
+					{suffix}
 				</Text>
 				<Text fontSize={'xs'} fontWeight={'bold'}>
-					{suffix}
+					{preservation}
 				</Text>
 			</>
 			{removeable && (

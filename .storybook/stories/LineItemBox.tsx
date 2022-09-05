@@ -75,6 +75,7 @@ const LineItemBox = ({
 const rowSampleMeat = [
 	{
 		line: 1,
+		productCode: 'YP',
 		productDescription: 'LAMB TENDERLOIN BUTT OFF',
 		amountRequested: 11.34,
 		quantityAdjustment: 11.24,
@@ -85,6 +86,7 @@ const rowSampleMeat = [
 	},
 	{
 		line: 2,
+		productCode: 'YP',
 		productDescription: 'LAMB TENDERLOIN BUTT OFF',
 		amountRequested: 11,
 		quantityAdjustment: 11,
@@ -95,6 +97,7 @@ const rowSampleMeat = [
 	},
 	{
 		line: 3,
+		productCode: 'YP',
 		productDescription: 'LAMB TENDERLOIN BUTT OFF',
 		amountRequested: 14,
 		quantityAdjustment: 5,
@@ -147,6 +150,7 @@ export const MeatAdjustment = () => {
 const rowSampleFruit = [
 	{
 		line: 1,
+		productCode: 'YP',
 		productDescription: 'JUICY ORANGES',
 		amountRequested: 11.34,
 		quantityAdjustment: null,

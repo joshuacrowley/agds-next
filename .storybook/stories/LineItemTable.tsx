@@ -10,6 +10,7 @@ import {
 } from '../../docs/components/designSystemComponents';
 
 import { CutCode } from './CutCodeToken';
+import { ProductCode } from './ProductCodeToken';
 import { MatchedModal } from './MatchedModal';
 
 export default {
@@ -35,11 +36,10 @@ export const LineItemTable = ({
 					</TableHeader>
 				) : null}
 
-				{commodity === 'M' ? (
-					<TableHeader textAlign="left" scope="col">
-						Cut Code
-					</TableHeader>
-				) : null}
+				<TableHeader textAlign="left" scope="col">
+					Codes
+				</TableHeader>
+
 				<TableHeader textAlign="left" scope="col">
 					Products
 				</TableHeader>
@@ -74,13 +74,20 @@ export const LineItemTable = ({
 
 						{commodity === 'M' ? (
 							<TableCell textAlign="left">
-								<CutCode
-									code={row.cutcode.code}
-									preservation={row.cutcode.preservation}
-									suffix={row.cutcode.suffix}
-								/>
+								<Flex gap={0.25}>
+									<ProductCode code={row.productCode} />
+									<CutCode
+										code={row.cutcode.code}
+										preservation={row.cutcode.preservation}
+										suffix={row.cutcode.suffix}
+									/>
+								</Flex>
 							</TableCell>
-						) : null}
+						) : (
+							<TableCell textAlign="left">
+								<ProductCode code={row.productCode} />
+							</TableCell>
+						)}
 						<TableCell textAlign="left">{row.productDescription}</TableCell>
 						<TableCell textAlign="right">
 							{row.amountRequested} {row.unit}
@@ -111,6 +118,7 @@ const rowSampleMeat = [
 		equivalenceRate: 1.67,
 		amountForQuota: 11.34,
 		unit: 'TN',
+		productCode: 'YP',
 		cutcode: { code: '123', preservation: 'F', suffix: null },
 	},
 	{
@@ -121,6 +129,7 @@ const rowSampleMeat = [
 		equivalenceRate: null,
 		amountForQuota: null,
 		unit: 'TN',
+		productCode: 'YP',
 		cutcode: { code: '123', preservation: 'F', suffix: null },
 	},
 	{
@@ -131,6 +140,7 @@ const rowSampleMeat = [
 		equivalenceRate: null,
 		amountForQuota: null,
 		unit: 'TN',
+		productCode: 'YP',
 		cutcode: { code: '123', preservation: 'F', suffix: null },
 	},
 	{
@@ -141,6 +151,7 @@ const rowSampleMeat = [
 		equivalenceRate: null,
 		amountForQuota: null,
 		unit: 'TN',
+		productCode: 'YP',
 		cutcode: { code: '123', preservation: 'F', suffix: null },
 	},
 	{
@@ -151,6 +162,7 @@ const rowSampleMeat = [
 		equivalenceRate: null,
 		amountForQuota: null,
 		unit: 'TN',
+		productCode: 'YP',
 		cutcode: { code: '123', preservation: 'F', suffix: null },
 	},
 	{
@@ -161,6 +173,7 @@ const rowSampleMeat = [
 		equivalenceRate: null,
 		amountForQuota: null,
 		unit: 'TN',
+		productCode: 'YP',
 		cutcode: { code: '123', preservation: 'F', suffix: null },
 	},
 ];
@@ -177,6 +190,7 @@ const rowSampleFruit = [
 	{
 		line: 1,
 		productDescription: 'JUICY ORANGES',
+		productCode: 'ORA',
 		amountRequested: 11.34,
 		quantityAdjustment: null,
 		amountForQuota: 11.34,
@@ -185,6 +199,7 @@ const rowSampleFruit = [
 	{
 		line: 2,
 		productDescription: 'JUICY ORANGES',
+		productCode: 'ORA',
 		amountRequested: 11.34,
 		quantityAdjustment: null,
 		amountForQuota: 11.34,
@@ -192,6 +207,7 @@ const rowSampleFruit = [
 	},
 	{
 		line: 3,
+		productCode: 'ORA',
 		productDescription: 'JUICY ORANGES',
 		amountRequested: 11.34,
 		quantityAdjustment: null,
