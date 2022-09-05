@@ -39,8 +39,12 @@ export const QuotaToken = ({
 			<Text fontSize={'lg'}>/</Text>
 			<Text fontSize={'xl'}>{quota}</Text>
 			<Text fontSize={'lg'}>/</Text>
-			<Text fontSize={'xl'}>{agreementCode}</Text>
-			<Text fontSize={'lg'}>/</Text>
+			{agreementCode && (
+				<>
+					<Text fontSize={'xl'}>{agreementCode}</Text>
+					<Text fontSize={'lg'}>/</Text>
+				</>
+			)}
 			<Text fontSize={'xl'}>
 				<span style={{ fontSize: 32, fontWeight: 200 }}>{periodTerm}</span>
 			</Text>

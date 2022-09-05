@@ -93,7 +93,7 @@ const RuleSetTable = ({
 	</Table>
 );
 
-const RuleSetCards = ({
+export const RuleSetCard = ({
 	ruleSetNumber,
 	label,
 	market,
@@ -148,7 +148,7 @@ const RuleSetCards = ({
 
 export const GroupOfCards = () => (
 	<Columns cols={{ xs: 1, md: 3, lg: 12 }}>
-		<RuleSetCards
+		<RuleSetCard
 			ruleSetNumber={21}
 			label={'Grain Fed, Beef'}
 			market={'ID'}
@@ -171,7 +171,7 @@ export const GroupOfCards = () => (
 			equivalenceRate={1.6}
 			editRules={() => console.log('edit rules')}
 		/>
-		<RuleSetCards
+		<RuleSetCard
 			ruleSetNumber={36}
 			label={'Oranges'}
 			market={'ID'}
@@ -179,7 +179,7 @@ export const GroupOfCards = () => (
 			productTypes={['ORA']}
 			editRules={() => console.log('edit rules')}
 		/>
-		<RuleSetCards
+		<RuleSetCard
 			ruleSetNumber={39}
 			label={'Steel'}
 			market={'ID'}
@@ -187,7 +187,7 @@ export const GroupOfCards = () => (
 			productTypes={['STEEL']}
 			editRules={() => console.log('edit rules')}
 		/>
-		<RuleSetCards
+		<RuleSetCard
 			ruleSetNumber={39}
 			label={'Steel'}
 			market={'ID'}
@@ -200,7 +200,7 @@ export const GroupOfCards = () => (
 
 export const CutCodeCard = () => (
 	<Columns cols={{ xs: 1, md: 3, lg: 12 }}>
-		<RuleSetCards
+		<RuleSetCard
 			ruleSetNumber={21}
 			label={'Grain Fed, Beef'}
 			market={'ID'}
@@ -227,7 +227,7 @@ export const CutCodeCard = () => (
 
 export const ProductCard = () => (
 	<Columns cols={{ xs: 1, md: 3, lg: 12 }}>
-		<RuleSetCards
+		<RuleSetCard
 			ruleSetNumber={39}
 			label={'Steel'}
 			market={'ID'}
@@ -239,7 +239,7 @@ export const ProductCard = () => (
 
 export const GoToQuotaRuleSetPage = () => (
 	<Columns cols={{ xs: 1, md: 3, lg: 12 }}>
-		<RuleSetCards
+		<RuleSetCard
 			linkToEdit={'#'}
 			ruleSetNumber={39}
 			label={'Steel'}

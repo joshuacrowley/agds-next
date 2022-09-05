@@ -3,6 +3,7 @@ export type IconProps = _IconProps;
 
 export * from './utils';
 
+export { createIcon } from './Icon';
 export { AlertIcon } from './icons/AlertIcon';
 export { AlertFilledIcon } from './icons/AlertFilledIcon';
 export { ArrowUpIcon } from './icons/ArrowUpIcon';
