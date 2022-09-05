@@ -44,14 +44,14 @@ const ICONS_FILLED = {
 };
 
 const ICONS = {
-	SUCCESS: <SuccessIcon color={'success'} />,
-	ALERT: <AlertIcon color={'error'} />,
-	WARNING: <WarningIcon color={'warning'} />,
+	SUCCESS: <SuccessIcon color={'border'} />,
+	ALERT: <AlertIcon color={'border'} />,
+	WARNING: <WarningIcon color={'border'} />,
 };
 
 const subNavEndElement = ({ count, status, active }) =>
 	count ? (
-		<NotificationBadge tone="action" value={count} />
+		<NotificationBadge tone={active ? 'action' : 'neutral'} value={count} />
 	) : active ? (
 		ICONS_FILLED[status]
 	) : (
@@ -115,7 +115,7 @@ export const QuotaSetupCertificate = () => (
 		SubNavLinksConfig={[
 			{
 				label: 'Eligibility Rules',
-				count: 0,
+				count: 3,
 				status: null,
 				id: 'rules',
 			},
@@ -137,7 +137,7 @@ export const QuotaSetupCertificate = () => (
 	</SettingsSubNav>
 );
 
-export const Requests = () => (
+export const CertificateDefault = () => (
 	<SettingsSubNav
 		activePath={'rules'}
 		SubNavLinksConfig={[
