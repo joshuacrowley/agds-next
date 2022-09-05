@@ -8,7 +8,7 @@ export default {
 	title: 'Quota/CutCode',
 };
 
-const CutCode = ({ code, presevation, suffix, removeable }) => (
+export const CutCode = ({ code, preservation, suffix, removeable }) => (
 	<Box
 		as={'span'}
 		display="inline-block"
@@ -16,7 +16,7 @@ const CutCode = ({ code, presevation, suffix, removeable }) => (
 		rounded
 		paddingX={0.5}
 		fontSize="sm"
-		title={`Cut Code ${code}; Presevation ${presevation || 'N/A'}; Suffix ${
+		title={`Cut Code ${code}; preservation ${preservation || 'N/A'}; Suffix ${
 			suffix || 'N/A'
 		}`}
 	>
@@ -24,7 +24,7 @@ const CutCode = ({ code, presevation, suffix, removeable }) => (
 			<Text fontSize={'xs'}>{code}</Text>
 			<>
 				<Text fontSize={'xs'} fontWeight={'bold'}>
-					{presevation}
+					{preservation}
 				</Text>
 				<Text fontSize={'xs'} fontWeight={'bold'}>
 					{suffix}
@@ -41,14 +41,14 @@ const CutCode = ({ code, presevation, suffix, removeable }) => (
 
 export const JustCode = () => <CutCode code={'1000'} />;
 
-export const Presevation = () => <CutCode code={'1000'} presevation={'C'} />;
+export const Preservation = () => <CutCode code={'1000'} preservation={'C'} />;
 
 export const Suffix = () => <CutCode code={'1000'} suffix={'G'} />;
 
 export const All = () => (
-	<CutCode code={'1000'} suffix={'G'} presevation={'F'} />
+	<CutCode code={'1000'} suffix={'G'} preservation={'F'} />
 );
 
 export const Removeable = () => (
-	<CutCode code={'1000'} suffix={'G'} presevation={'F'} removeable />
+	<CutCode code={'1000'} suffix={'G'} preservation={'F'} removeable />
 );

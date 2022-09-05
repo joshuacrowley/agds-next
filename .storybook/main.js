@@ -4,6 +4,19 @@ module.exports = {
 		'./stories/*.@(ts|tsx)',
 	],
 	addons: [
+		{
+			name: '@storybook/addon-storysource',
+			options: {
+				rule: {
+					test: [/\.tsx?$/],
+				},
+
+				loaderOptions: {
+					prettierConfig: { printWidth: 80, singleQuote: false },
+					injectStoryParameters: false,
+				},
+			},
+		},
 		'@storybook/addon-links',
 		{
 			name: '@storybook/addon-essentials',

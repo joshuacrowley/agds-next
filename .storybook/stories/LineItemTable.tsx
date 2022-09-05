@@ -9,77 +9,57 @@ import {
 	TableHead,
 } from '../../docs/components/designSystemComponents';
 
+import { CutCode } from './CutCodeToken';
 export default {
 	title: 'Quota/LineItemTable - WIP',
 };
 
-export const Modular: ComponentStory<typeof Table> = (args) => (
-	<Table striped {...args}>
+export const LineItemTable = ({ rows, striped }) => (
+	<Table striped={striped}>
 		<TableHead>
 			<tr>
-				<TableHeader width="50%" scope="col">
+				<TableHeader width="2%" scope="col">
 					Line
 				</TableHeader>
 				<TableHeader textAlign="right" scope="col">
-					Population
+					Cut Code
+				</TableHeader>
+				<TableHeader textAlign="left" scope="col">
+					Products
 				</TableHeader>
 				<TableHeader textAlign="right" scope="col">
-					Change over previous year %
+					Amount Requested
 				</TableHeader>
 				<TableHeader textAlign="right" scope="col">
-					Change over previous decade %
+					Quantity Adjustment
+				</TableHeader>
+				<TableHeader textAlign="right" scope="col">
+					Equivalence
+				</TableHeader>
+				<TableHeader textAlign="right" scope="col">
+					Amount for quota
 				</TableHeader>
 			</tr>
 		</TableHead>
 		<TableBody>
-			<tr>
-				<TableCell>New South Wales</TableCell>
-				<TableCell textAlign="right">7,670,700</TableCell>
-				<TableCell textAlign="right">3.1%</TableCell>
-				<TableCell textAlign="right">12.9%</TableCell>
-			</tr>
-			<tr>
-				<TableCell>Victoria</TableCell>
-				<TableCell textAlign="right">5,996,400</TableCell>
-				<TableCell textAlign="right">2.5%</TableCell>
-				<TableCell textAlign="right">9.3%</TableCell>
-			</tr>
-			<tr>
-				<TableCell>Queensland</TableCell>
-				<TableCell textAlign="right">4,808,800</TableCell>
-				<TableCell textAlign="right">1.7%</TableCell>
-				<TableCell textAlign="right">13.3%</TableCell>
-			</tr>
-			<tr>
-				<TableCell>Western Australia</TableCell>
-				<TableCell textAlign="right">2,603,900</TableCell>
-				<TableCell textAlign="right">2.3%</TableCell>
-				<TableCell textAlign="right">11.6%</TableCell>
-			</tr>
-			<tr>
-				<TableCell>South Australia</TableCell>
-				<TableCell textAlign="right">1,702,800</TableCell>
-				<TableCell textAlign="right">2.0%</TableCell>
-				<TableCell textAlign="right">6.8%</TableCell>
-			</tr>
-			<tr>
-				<TableCell>Tasmania</TableCell>
-				<TableCell textAlign="right">517,400</TableCell>
-				<TableCell textAlign="right">4%</TableCell>
-				<TableCell textAlign="right">5.3%</TableCell>
-			</tr>
-			<tr>
-				<TableCell>Nothern Territory</TableCell>
-				<TableCell textAlign="right">244,400</TableCell>
-				<TableCell textAlign="right">1.2%</TableCell>
-				<TableCell textAlign="right">4.5%</TableCell>
-			</tr>
-			<tr>
-				<TableCell>Australian Capital Territory</TableCell>
-				<TableCell textAlign="right">393,000</TableCell>
-				<TableCell textAlign="right">2.4%</TableCell>
-				<TableCell textAlign="right">9.6%</TableCell>
-			</tr>
+			{rows &&
+				rows.map((row) => (
+					<tr>
+						<TableCell>{row.line}</TableCell>
+						<TableCell textAlign="right">
+							<CutCode
+								code={row.cutcode.code}
+								preservation={row.cutcode.preservation}
+								suffix={row.cutcode.suffix}
+							/>
+						</TableCell>
+						<TableCell textAlign="right">{row.productDescription}</TableCell>
+						<TableCell textAlign="right">{row.amountRequested}</TableCell>
+						<TableCell textAlign="right">{row.quantityAdjustment}</TableCell>
+						<TableCell textAlign="right">{row.equivalenceRate}</TableCell>
+						<TableCell textAlign="right">{row.amountForQuota}</TableCell>
+					</tr>
+				))}
 		</TableBody>
 	</Table>
 );
