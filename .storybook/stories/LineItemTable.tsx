@@ -27,7 +27,7 @@ export const LineItemTable = ({ rows, striped }) => (
 				<TableHeader textAlign="left" scope="col">
 					Products
 				</TableHeader>
-				<TableHeader textAlign="right" scope="col">
+				<TableHeader textAlign="left" scope="col">
 					Amount Requested
 				</TableHeader>
 				<TableHeader textAlign="right" scope="col">
@@ -37,7 +37,7 @@ export const LineItemTable = ({ rows, striped }) => (
 					Equivalence
 				</TableHeader>
 				<TableHeader textAlign="right" scope="col">
-					Amount for quota
+					Amount for Quota
 				</TableHeader>
 			</tr>
 		</TableHead>
@@ -53,11 +53,17 @@ export const LineItemTable = ({ rows, striped }) => (
 								suffix={row.cutcode.suffix}
 							/>
 						</TableCell>
-						<TableCell textAlign="right">{row.productDescription}</TableCell>
-						<TableCell textAlign="right">{row.amountRequested}</TableCell>
-						<TableCell textAlign="right">{row.quantityAdjustment}</TableCell>
-						<TableCell textAlign="right">{row.equivalenceRate}</TableCell>
-						<TableCell textAlign="right">{row.amountForQuota}</TableCell>
+						<TableCell textAlign="left">{row.productDescription}</TableCell>
+						<TableCell textAlign="right">
+							{row.amountRequested} {row.unit}
+						</TableCell>
+						<TableCell textAlign="right">
+							{row.quantityAdjustment} {row.unit}
+						</TableCell>
+						<TableCell textAlign="right">{row.equivalenceRate} </TableCell>
+						<TableCell textAlign="right">
+							{row.amountForQuota} {row.unit}
+						</TableCell>
 					</tr>
 				))}
 		</TableBody>
