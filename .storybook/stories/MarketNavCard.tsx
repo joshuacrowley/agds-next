@@ -20,7 +20,7 @@ export default {
 };
 
 const MarketNavCard = ({ market, quotaCount, linkToMarket }) => (
-	<Column columnSpan={{ xs: 1, md: 2, lg: 4 }}>
+	<Column columnSpan={{ xs: 2, sm: 3, md: 2, lg: 4, xl: 4 }}>
 		<Card>
 			<CardHeader>
 				<Flex alignItems={'center'} gap={1}>
@@ -47,9 +47,10 @@ const MarketNavCard = ({ market, quotaCount, linkToMarket }) => (
 );
 
 export const Default = () => (
-	<Columns cols={{ xs: 1, md: 3, lg: 12 }}>
+	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
 		<MarketNavCard market={'United States of America'} quotaCount={0} />
 		<MarketNavCard market={'United States of America'} quotaCount={8} />
+		<MarketNavCard market={'United States of America'} quotaCount={16} />
 		<MarketNavCard market={'United States of America'} quotaCount={16} />
 	</Columns>
 );

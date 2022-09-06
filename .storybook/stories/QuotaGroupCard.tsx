@@ -29,7 +29,7 @@ const QuotaGroupCard = ({
 	multipleActiveQuotasPeriods,
 	noActiveQuotaPeriod,
 }) => (
-	<Column columnSpan={{ xs: 1, md: 3, lg: 12 }}>
+	<Column columnSpan={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
 		<Card>
 			<CardHeader>
 				<Flex alignItems={'center'} gap={1}>
@@ -43,19 +43,29 @@ const QuotaGroupCard = ({
 				padding={1.5}
 			>
 				<Flex justifyContent={'space-between'} alignItems={'center'}>
-					{noActiveQuotaPeriod ? (
-						<StatusBadge tone={'warning'} label={'No Active Quota'} />
-					) : (
-						<StatusBadge
-							tone={'success'}
-							label={
-								<Flex alignItems={'center'} gap={0.3}>
-									{multipleActiveQuotasPeriods} Active
-									{!multipleActiveQuotasPeriods ? activeQuotaPeriod : null}
-								</Flex>
-							}
-						/>
-					)}
+					<Flex
+						display={{
+							xs: 'none',
+							sm: 'none',
+							md: 'flex',
+							lg: 'flex',
+							xl: 'flex',
+						}}
+					>
+						{noActiveQuotaPeriod ? (
+							<StatusBadge tone={'warning'} label={'No Active Quota'} />
+						) : (
+							<StatusBadge
+								tone={'success'}
+								label={
+									<Flex alignItems={'center'} gap={0.3}>
+										{multipleActiveQuotasPeriods} Active
+										{!multipleActiveQuotasPeriods ? activeQuotaPeriod : null}
+									</Flex>
+								}
+							/>
+						)}
+					</Flex>
 					<Flex gap={1}>
 						<TextLink href={linkToAddNewPeriod}>Add New Quota Period</TextLink>
 						<DirectionLink href={linkToViewQuota} direction="right">
@@ -69,7 +79,55 @@ const QuotaGroupCard = ({
 );
 
 export const Active = () => (
-	<Columns cols={{ xs: 1, md: 3, lg: 12 }}>
+	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
+		<QuotaGroupCard
+			quota={'Mandarins, clementines, Wilkings and similar citrus hybrids '}
+			activeQuotaPeriod={
+				<QuotaToken
+					shortHand
+					market={'EU'}
+					quotaCode={'BUFFM'}
+					periodEnd={'23Q2'}
+					agreementCode={'FTA'}
+				/>
+			}
+		/>
+		<QuotaGroupCard
+			quota={'Buffalo Meat'}
+			activeQuotaPeriod={
+				<QuotaToken
+					shortHand
+					market={'EU'}
+					quotaCode={'BUFFM'}
+					periodEnd={'23Q2'}
+					agreementCode={'FTA'}
+				/>
+			}
+		/>
+		<QuotaGroupCard
+			quota={'Buffalo Meat'}
+			activeQuotaPeriod={
+				<QuotaToken
+					shortHand
+					market={'EU'}
+					quotaCode={'BUFFM'}
+					periodEnd={'23Q2'}
+					agreementCode={'FTA'}
+				/>
+			}
+		/>
+		<QuotaGroupCard
+			quota={'Buffalo Meat'}
+			activeQuotaPeriod={
+				<QuotaToken
+					shortHand
+					market={'EU'}
+					quotaCode={'BUFFM'}
+					periodEnd={'23Q2'}
+					agreementCode={'FTA'}
+				/>
+			}
+		/>
 		<QuotaGroupCard
 			quota={'Buffalo Meat'}
 			activeQuotaPeriod={
@@ -86,13 +144,22 @@ export const Active = () => (
 );
 
 export const MultipleActiveQuotas = () => (
-	<Columns cols={{ xs: 1, md: 3, lg: 12 }}>
+	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
+		<QuotaGroupCard quota={'Buffalo Meat'} multipleActiveQuotasPeriods={2} />
+		<QuotaGroupCard quota={'Buffalo Meat'} multipleActiveQuotasPeriods={2} />
+		<QuotaGroupCard quota={'Buffalo Meat'} multipleActiveQuotasPeriods={2} />
+		<QuotaGroupCard quota={'Buffalo Meat'} multipleActiveQuotasPeriods={2} />
+		<QuotaGroupCard quota={'Buffalo Meat'} multipleActiveQuotasPeriods={2} />
 		<QuotaGroupCard quota={'Buffalo Meat'} multipleActiveQuotasPeriods={2} />
 	</Columns>
 );
 
 export const noActiveQuotaPeriod = () => (
-	<Columns cols={{ xs: 1, md: 3, lg: 12 }}>
+	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
+		<QuotaGroupCard quota={'Buffalo Meat'} noActiveQuotaPeriod />
+		<QuotaGroupCard quota={'Buffalo Meat'} noActiveQuotaPeriod />
+		<QuotaGroupCard quota={'Buffalo Meat'} noActiveQuotaPeriod />
+		<QuotaGroupCard quota={'Buffalo Meat'} noActiveQuotaPeriod />
 		<QuotaGroupCard quota={'Buffalo Meat'} noActiveQuotaPeriod />
 	</Columns>
 );

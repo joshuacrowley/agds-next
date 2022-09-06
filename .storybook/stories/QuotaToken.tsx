@@ -6,6 +6,21 @@ export default {
 	title: 'Quota/QuotaToken',
 };
 
+const responsiveFontSizes = {
+	sm: 'lg',
+	xs: 'lg',
+	md: 'xl',
+	lg: 'xl',
+	xl: 'xl',
+};
+const responsiveFontSizesAlt = {
+	sm: 'md',
+	xs: 'md',
+	md: 'lg',
+	lg: 'lg',
+	xl: 'lg',
+};
+
 export const QuotaToken = ({
 	market,
 	quota,
@@ -33,20 +48,20 @@ export const QuotaToken = ({
 		</Flex>
 	) : (
 		<Flex gap={0.25} alignItems={'center'}>
-			<Text fontSize={'xl'} fontWeight={'bold'}>
+			<Text fontSize={responsiveFontSizes} fontWeight={'bold'}>
 				{market}
 			</Text>
-			<Text fontSize={'lg'}>/</Text>
-			<Text fontSize={'xl'}>{quota}</Text>
-			<Text fontSize={'lg'}>/</Text>
+			<Text fontSize={responsiveFontSizesAlt}>/</Text>
+			<Text fontSize={responsiveFontSizes}>{quota}</Text>
+			<Text fontSize={responsiveFontSizesAlt}>/</Text>
 			{agreementCode && (
 				<>
-					<Text fontSize={'xl'}>{agreementCode}</Text>
-					<Text fontSize={'lg'}>/</Text>
+					<Text fontSize={responsiveFontSizes}>{agreementCode}</Text>
+					<Text fontSize={responsiveFontSizesAlt}>/</Text>
 				</>
 			)}
-			<Text fontSize={'xl'}>
-				<span style={{ fontSize: 32, fontWeight: 200 }}>{periodTerm}</span>
+			<Text fontSize={responsiveFontSizes}>
+				<span style={{ fontWeight: 200 }}>{periodTerm}</span>
 			</Text>
 		</Flex>
 	);

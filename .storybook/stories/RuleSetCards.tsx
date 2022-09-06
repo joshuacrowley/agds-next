@@ -52,12 +52,16 @@ const RuleSetTable = ({
 			<tr>
 				<TableCell>
 					<Text as="span" fontWeight={'bold'}>
-						{`Product Type${productTypes.length > 1 ? 's' : ''}`}
+						{`Product Type${
+							productTypes && productTypes.length > 1 ? 's' : ''
+						}`}
 					</Text>
 				</TableCell>
 				<TableCell textAlign="right">
 					<Text>
-						{productTypes.length > 1 ? productTypes.join(', ') : productTypes}
+						{productTypes && productTypes.length > 1
+							? productTypes.join(', ')
+							: productTypes}
 					</Text>
 				</TableCell>
 			</tr>
@@ -100,7 +104,7 @@ export const RuleSetCard = ({
 	linkToEdit,
 	editRules,
 }) => (
-	<Column columnSpan={{ xs: 1, md: 3, lg: 3 }}>
+	<Column columnSpan={{ xs: 2, sm: 3, md: 2, lg: 3, xl: 3 }}>
 		<Card>
 			<CardHeader>
 				<Stack gap={1}>
@@ -143,7 +147,7 @@ export const RuleSetCard = ({
 );
 
 export const GroupOfCards = () => (
-	<Columns cols={{ xs: 1, md: 3, lg: 12 }}>
+	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
 		<RuleSetCard
 			ruleSetNumber={21}
 			label={'Grain Fed, Beef'}
@@ -195,7 +199,7 @@ export const GroupOfCards = () => (
 );
 
 export const CutCodeCard = () => (
-	<Columns cols={{ xs: 1, md: 3, lg: 12 }}>
+	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
 		<RuleSetCard
 			ruleSetNumber={21}
 			label={'Grain Fed, Beef'}
@@ -222,7 +226,7 @@ export const CutCodeCard = () => (
 );
 
 export const ProductCard = () => (
-	<Columns cols={{ xs: 1, md: 3, lg: 12 }}>
+	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
 		<RuleSetCard
 			ruleSetNumber={39}
 			label={'Steel'}
@@ -234,7 +238,7 @@ export const ProductCard = () => (
 );
 
 export const GoToQuotaRuleSetPage = () => (
-	<Columns cols={{ xs: 1, md: 3, lg: 12 }}>
+	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
 		<RuleSetCard
 			linkToEdit={'#'}
 			ruleSetNumber={39}

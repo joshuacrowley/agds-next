@@ -39,7 +39,7 @@ const QuotaCard = ({
 	linkToViewQuotaPeriod,
 	quotaPeriodStatus,
 }) => (
-	<Column columnSpan={{ xs: 1, md: 3, lg: 12 }}>
+	<Column columnSpan={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
 		<Card>
 			<CardHeader>
 				<Flex alignItems={'center'} gap={1}>
@@ -69,7 +69,7 @@ const QuotaCard = ({
 );
 
 export const Active = () => (
-	<Columns cols={{ xs: 1, md: 3, lg: 12 }}>
+	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
 		<QuotaCard
 			quotaPeriodStatus={'active'}
 			activeDate={'01/01/2022'}
@@ -86,7 +86,7 @@ export const Active = () => (
 );
 
 export const NoQuotaPeriods = () => (
-	<Columns cols={{ xs: 1, md: 3, lg: 12 }}>
+	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
 		<QuotaCard
 			quotaPeriodStatus={'notSet'}
 			quotaToken={
@@ -102,7 +102,7 @@ export const NoQuotaPeriods = () => (
 );
 
 export const noActiveQuotaPeriod = () => (
-	<Columns cols={{ xs: 1, md: 3, lg: 12 }}>
+	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
 		<QuotaCard
 			quotaPeriodStatus={'expired'}
 			activeDate={'01/01/2021'}

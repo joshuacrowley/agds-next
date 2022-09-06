@@ -76,7 +76,7 @@ const SettingsSubNav = ({ activePath, children, SubNavLinksConfig }) => (
 			background="body"
 			links={SubNavLinks({ config: SubNavLinksConfig, activePath })}
 		/>
-		<Heading as={'h4'}>{'Certificate Settings'}</Heading>
+
 		{children}
 	</Stack>
 );
