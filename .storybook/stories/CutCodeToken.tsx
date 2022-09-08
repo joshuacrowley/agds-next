@@ -20,18 +20,26 @@ export const CutCode = ({ code, preservation, suffix, removeable }) => (
 			preservation || null
 		}; `}
 	>
-		<Flex alignItems={'center'} gap={0.1}>
+		<Flex alignItems={'center'}>
 			<Text fontSize={'xs'}>{code}</Text>
 			<>
-				<Text fontSize={'xs'} fontWeight={'bold'}>
-					{suffix}
-				</Text>
-				<Text fontSize={'xs'} fontWeight={'bold'}>
-					{preservation}
-				</Text>
+				{suffix && (
+					<Text fontSize={'xs'} fontWeight={'bold'}>
+						{suffix}
+					</Text>
+				)}
+				{preservation && (
+					<Text fontSize={'xs'} fontWeight={'bold'}>
+						{preservation}
+					</Text>
+				)}
 			</>
 			{removeable && (
-				<Stack as={'span'} onClick={() => console.log('Boom')}>
+				<Stack
+					paddingLeft={0.25}
+					as={'span'}
+					onClick={() => console.log('Boom')}
+				>
 					<CloseIcon size={'sm'} />
 				</Stack>
 			)}

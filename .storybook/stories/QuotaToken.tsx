@@ -31,7 +31,7 @@ export const QuotaToken = ({
 	shortHand,
 }) =>
 	shortHand ? (
-		<Flex gap={0.2} alignItems={'center'}>
+		<Flex gap={0.25} alignItems={'center'}>
 			<Text fontSize={'sm'} fontWeight={'bold'}>
 				{market}
 			</Text>

@@ -19,7 +19,7 @@ export const ProductCode = ({ code }) => (
 		background={'bodyAlt'}
 		title={`Product Code ${code};`}
 	>
-		<Flex alignItems={'center'} gap={0.1}>
+		<Flex alignItems={'center'}>
 			<Text fontSize={'xs'}>{code}</Text>
 		</Flex>
 	</Box>
