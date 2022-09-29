@@ -1,13 +1,13 @@
 import { Box, Flex, Stack } from '@ag.ds-next/box';
 import { useTernaryState } from '@ag.ds-next/core';
-import { Button } from '../../docs/components/designSystemComponents';
+import { Button } from '@ag.ds-next/button';
 import {
 	Table,
 	TableBody,
 	TableHeader,
 	TableCell,
 	TableHead,
-} from '../../docs/components/designSystemComponents';
+} from '@ag.ds-next/table';
 
 import { CutCode } from './CutCodeToken';
 import { ProductCode } from './ProductCodeToken';

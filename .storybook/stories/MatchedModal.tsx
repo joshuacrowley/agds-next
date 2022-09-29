@@ -6,7 +6,7 @@ import { Button, ButtonGroup } from '@ag.ds-next/button';
 import { Modal } from '@ag.ds-next/modal';
 import { Textarea } from '@ag.ds-next/textarea';
 import { Select } from '@ag.ds-next/select';
-import { Checkbox } from '../../docs/components/designSystemComponents';
+import { Checkbox } from '@ag.ds-next/control-input';
 import { useTernaryState } from '@ag.ds-next/core';
 import { InfoIcon } from '@ag.ds-next/icon';
 import { RuleSetCard } from './RuleSetCards';

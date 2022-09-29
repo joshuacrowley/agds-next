@@ -1,16 +1,25 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Fragment } from 'react';
+import { SubNav } from '@ag.ds-next/sub-nav';
+import { NotificationBadge } from '@ag.ds-next/badge';
+import {
+	SuccessFilledIcon,
+	SuccessIcon,
+	WarningFilledIcon,
+	WarningIcon,
+	AlertFilledIcon,
+	AlertIcon,
+} from '@ag.ds-next/icon';
 import { Text } from '@ag.ds-next/text';
-import { Box, Flex, Stack } from '@ag.ds-next/box';
+import { Stack, Box, Flex } from '@ag.ds-next/box';
+import { Heading } from '@ag.ds-next/heading';
+
 import { Button, ButtonGroup } from '@ag.ds-next/button';
 import { Modal } from '@ag.ds-next/modal';
 import { Textarea } from '@ag.ds-next/textarea';
 import { Select } from '@ag.ds-next/select';
-import { Checkbox } from '@ag.ds-next/control-input';
 import { useTernaryState } from '@ag.ds-next/core';
 
 export default {
-	title: 'Quota/CancelModal',
+	title: 'Quota/AmountBars',
 };
 
 export const Basic = () => {
@@ -18,6 +27,11 @@ export const Basic = () => {
 
 	return (
 		<div>
+			<Flex>
+				<Box background={'success'} color={'success'} width={'12%'}>
+					J
+				</Box>
+			</Flex>
 			<Button onClick={openModal}>Cancel Certificate</Button>
 			<Modal
 				isOpen={isModalOpen}
@@ -73,9 +87,6 @@ export const Basic = () => {
 						required
 					/>
 
-					<Checkbox onBlur={() => {}} onChange={function noRefCheck() {}}>
-						Issue refund if required
-					</Checkbox>
 					<Select
 						block
 						label="Balance adjustment"
