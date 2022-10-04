@@ -1,10 +1,15 @@
+import React, { useState } from 'react';
 import { Text } from '@ag.ds-next/text';
 import { Stack, Box, Flex } from '@ag.ds-next/box';
 import { Button } from '@ag.ds-next/button';
 import { Modal } from '@ag.ds-next/modal';
 import { QuotaToken } from './QuotaToken';
 import { Columns, Column } from '@ag.ds-next/columns';
-import { ArrowRightIcon } from '@ag.ds-next/icon';
+import {
+	ArrowRightIcon,
+	ProgressDoneIcon,
+	ProgressTodoIcon,
+} from '@ag.ds-next/icon';
 
 export default {
 	title: 'Quota/AmountBars',
@@ -31,8 +36,10 @@ type AmoutBarProps = {
 	quota: quotaToken;
 	amountType: 'bucket' | 'quota';
 	bucketName: string;
-	swappable: boolean;
-	closed: boolean;
+	closed?: boolean;
+	swappable?: boolean;
+	swapped?: Function;
+	swapping?: boolean;
 };
 
 type BarData = {
@@ -58,7 +65,8 @@ const AmountBars = ({
 	bucketName,
 	swappable,
 	closed,
-	swapBucket,
+	swapping,
+	swapped,
 }: AmoutBarProps) => {
 	//Helper function to express amounts as percentages, using LocaleString for formatting
 
@@ -162,7 +170,16 @@ const AmountBars = ({
 								</Text>
 							)}
 						</Flex>
-						{swappable && <Button variant="text">Change bucket</Button>}
+						{swappable && (
+							<Button
+								iconAfter={swapping ? ProgressTodoIcon : ProgressDoneIcon}
+								onClick={() => swapped()}
+								variant="text"
+								disabled={!swapping}
+							>
+								{swapping ? 'Select' : 'Selected'}
+							</Button>
+						)}
 					</Flex>
 					{data ? (
 						<Bar
@@ -247,42 +264,72 @@ export const BucketNoAccount = () => (
 	</Columns>
 );
 
-export const BucketsMultiple = () => (
-	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
-		<AmountBars
-			data={[
-				{ amount: 20511, label: 'used' },
+export const BucketsMultiple = () => {
+	const [bucketIndex, setBucketIndex] = useState(0);
+	const [showBucketList, setBucketList] = useState(false);
+
+	const buckets = [
+		{
+			data: [
+				{ amount: 20000, label: 'used' },
 				{
 					amount: 20000,
 					label: 'uncommited',
 				},
 				{ amount: 60000, label: 'left' },
-			]}
-			amountType={'bucket'}
-			quota={exampleQuota}
-			total={100000}
-			unit={'kgs'}
-			bucketName={'Josh Pty Ltd'}
-			swappable
-		/>
-		<AmountBars
-			data={[
+			],
+			amountType: 'bucket',
+			quota: exampleQuota,
+			total: 100000,
+			unit: 'kgs',
+			bucketName: 'Josh Pty Ltd',
+			swappable: true,
+		},
+		{
+			data: [
 				{ amount: 10000, label: 'used' },
-				{
-					amount: 20000,
-					label: 'uncommited',
-				},
-				{ amount: 60000, label: 'left' },
-			]}
-			amountType={'bucket'}
-			quota={exampleQuota}
-			total={100000}
-			unit={'kgs'}
-			bucketName={'FCFS'}
-			swappable
-		/>
-	</Columns>
-);
+				{ amount: 40000, label: 'left' },
+			],
+			amountType: 'bucket',
+			quota: exampleQuota,
+			total: 50000,
+			unit: 'kgs',
+			bucketName: 'FCFS',
+			swappable: true,
+		},
+	];
+
+	return (
+		<Columns
+			cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}
+			alignItems={'flex-start'}
+		>
+			<Box
+				width={'100%'}
+				flexDirection={'row'}
+				justifyContent={'flex-end'}
+				display="block"
+			>
+				<Button variant="text" onClick={() => setBucketList(!showBucketList)}>
+					{showBucketList ? 'Cancel' : 'Change Selection'}
+				</Button>
+			</Box>
+			{showBucketList &&
+				buckets.map((bucket, index) => (
+					<AmountBars
+						{...bucket}
+						swapped={() => {
+							setBucketIndex(index);
+							setBucketList(false);
+						}}
+						swapping={showBucketList}
+					/>
+				))}
+
+			{!showBucketList && <AmountBars {...buckets[bucketIndex]} />}
+		</Columns>
+	);
+};
 
 export const BucketFull = () => (
 	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
