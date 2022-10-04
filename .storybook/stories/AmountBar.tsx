@@ -422,6 +422,12 @@ const Diagonal = {
 		'repeating-linear-gradient( -45deg, #a76800, #a76800 1.5px, rgba(229,229,247,0) 1.5px, rgba(229,229,247,0) 10px )',
 };
 
+const DiagonalAlt = {
+	'background-color': 'rgba(229,229,247,0)',
+	background:
+		'repeating-linear-gradient( 45deg, #026846, #026846 1.5px, rgba(229,229,247,0) 1.5px, rgba(229,229,247,0) 10px )',
+};
+
 const Dots = {
 	'background-color': 'rgba(159, 159, 171, 0.12)',
 	opacity: 0.5,
@@ -438,8 +444,8 @@ const Moon = {
 };
 
 const BAR_COLOUR_TEXTURE = {
-	used: { colour: colours.success, texture: {} },
-	usedAlt: { colour: colours.successShade, texture: Dots },
+	used: { colour: colours.success, texture: DiagonalAlt },
+	usedAlt: { colour: colours.successShade, texture: DiagonalAlt },
 	uncommited: { colour: colours.warning, texture: Diagonal },
 	closed: { colour: colours.altShade },
 	left: { colour: 'none', texture: {} },
