@@ -2,28 +2,24 @@ import React, { useState } from 'react';
 import { Text } from '@ag.ds-next/text';
 import { Stack, Box, Flex } from '@ag.ds-next/box';
 import { Button } from '@ag.ds-next/button';
-import { Modal } from '@ag.ds-next/modal';
+
 import { QuotaToken } from './QuotaToken';
 import { Columns, Column } from '@ag.ds-next/columns';
 import { Select } from '@ag.ds-next/select';
-import {
-	ArrowRightIcon,
-	ProgressDoneIcon,
-	ProgressTodoIcon,
-	ChevronDownIcon,
-} from '@ag.ds-next/icon';
-import { values } from '../../docs/vendors~main.6781d4e4e2e81bd13b5e.manager.bundle';
+import { ArrowRightIcon, ChevronDownIcon } from '@ag.ds-next/icon';
+
+import { BucketTable } from './BucketTable';
 
 export default {
 	title: 'Quota/AmountBars',
 };
 
-type barChartData = {
+type barCharttransactions = {
 	amount: number;
-	label: 'used' | 'uncommited' | 'left' | 'closed';
+	label: 'used' | 'uncommitted' | 'left' | 'closed' | 'remain' | 'requested';
 };
 
-type unit = 'kgs' | 'tns';
+type unit = 'kgs' | 'TNs' | 'head';
 
 type quotaToken = {
 	market: string;
@@ -44,7 +40,7 @@ type AmoutBarProps = {
 	unit: unit;
 	quota: quotaToken;
 	bucketName?: string;
-	data?: barChartData[];
+	transactions?: barCharttransactions[];
 	closed?: boolean;
 	swappable?: boolean;
 	swapped?: Function;
@@ -54,22 +50,15 @@ type AmoutBarProps = {
 	currentBucket?: number;
 };
 
-type BarData = {
-	data: barChartData[];
+type Bartransactions = {
+	transactions: barCharttransactions[];
 	height: number;
 	amountType: 'bucket' | 'quota';
 	closed: boolean;
 };
 
-const exampleQuota = {
-	market: 'EU',
-	quotaCode: 'BUFFM',
-	periodEnd: '23',
-	agreementCode: 'FTA',
-};
-
 const AmountBars = ({
-	data,
+	transactions,
 	total,
 	unit,
 	quota,
@@ -92,37 +81,43 @@ const AmountBars = ({
 
 	let quotaTotalUsedAmount: number = 0;
 	let quotaFilterAmounts,
-		fixedData: barChartData[] = [];
+		fixedtransactions: barCharttransactions[] = [];
 
 	if (amountType === 'quota') {
 		// When we're showing a Quota Amount Type, we sum all the bucket 'Used' amounts into a single total amount so it's easier to read.
 
-		quotaTotalUsedAmount = data
-			.filter((item: barChartData) => item.label === 'used')
+		quotaTotalUsedAmount = transactions
+			.filter((item: barCharttransactions) => item.label === 'used')
 			.reduce(
-				(accumulator: number, item: barChartData) => accumulator + item.amount,
+				(accumulator: number, item: barCharttransactions) =>
+					accumulator + item.amount,
 				0
 			);
 
 		// Get all the amounts for the other categories
 
-		quotaFilterAmounts = data.filter(
-			(item: barChartData) => item.label != 'used'
+		quotaFilterAmounts = transactions.filter(
+			(item: barCharttransactions) => item.label != 'used'
 		);
 
-		// Data object to be used for the Quota AmountType
+		// transactions object to be used for the Quota AmountType
 
-		fixedData = [
+		fixedtransactions = [
 			{ amount: quotaTotalUsedAmount, label: 'used' },
 			...quotaFilterAmounts,
 		];
 	} else {
-		//If it just a bucket amount type, then we can use the data as is;
+		//If it just a bucket amount type, then we can use the transactions as is;
 
-		fixedData = data;
+		fixedtransactions = transactions;
 	}
 
-	const Bar = ({ data, height, amountType, closed }: BarData) => (
+	const Bar = ({
+		transactions,
+		height,
+		amountType,
+		closed,
+	}: Bartransactions) => (
 		<Flex
 			justifyContent={'flex-start'}
 			alignItems={'stretch'}
@@ -132,7 +127,7 @@ const AmountBars = ({
 			height={`${height}px`}
 			background={'shade'}
 		>
-			{data.map((bar, index) => {
+			{transactions.map((bar, index) => {
 				//Grab design  tokens using index keys
 
 				let texture = BAR_COLOUR_TEXTURE[bar.label].texture;
@@ -141,7 +136,8 @@ const AmountBars = ({
 				//When reviewing a Quota Amount, we shade the buckets in alternating greens for some visual differentiation
 
 				if (amountType === 'quota' && bar.label === 'used' && index % 2 === 0) {
-					colour = colours.successShade;
+					colour = BAR_COLOUR_TEXTURE['usedAlt'].colour;
+					texture = BAR_COLOUR_TEXTURE['usedAlt'].texture;
 				}
 
 				//finally create a style object to help express the state of that bar item
@@ -200,10 +196,10 @@ const AmountBars = ({
 						)}
 						<QuotaToken shortHand {...quota} />
 					</Flex>
-					{data ? (
+					{transactions ? (
 						<Bar
 							height={BAR_HEIGHT[amountType]}
-							data={data}
+							transactions={transactions}
 							amountType={amountType}
 							closed={closed}
 						></Bar>
@@ -230,9 +226,10 @@ const AmountBars = ({
 						justifyContent={'space-between'}
 					>
 						<Flex flexDirection={'row'} gap={1}>
-							{data &&
-								fixedData.map((item) => (
+							{transactions &&
+								fixedtransactions.map((item) => (
 									<Text
+										fontSize={'xs'}
 										fontWeight={LABEL_FORMAT[item.label].weight}
 										color={closed ? null : LABEL_FORMAT[item.label].colour}
 									>
@@ -242,7 +239,7 @@ const AmountBars = ({
 									</Text>
 								))}
 						</Flex>
-						<Text>
+						<Text fontSize={'xs'}>
 							Total available: {total.toLocaleString()} {unit}
 						</Text>
 					</Flex>
@@ -255,12 +252,8 @@ const AmountBars = ({
 export const BucketStandard = () => (
 	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
 		<AmountBars
-			data={[
-				{ amount: 20511, label: 'used' },
-				{
-					amount: 20000,
-					label: 'uncommited',
-				},
+			transactions={[
+				{ amount: 40000, label: 'used' },
 				{ amount: 60000, label: 'left' },
 			]}
 			amountType={'bucket'}
@@ -283,31 +276,32 @@ export const BucketNoAccount = () => (
 	</Columns>
 );
 
-export const BucketsMultiple = () => {
+export const BucketsCertificate = () => {
 	const [bucketIndex, setBucketIndex] = useState(0);
 	const [showBucketList, setBucketList] = useState(false);
 
 	const buckets = [
 		{
-			data: [
+			transactions: [
 				{ amount: 10000, label: 'used' },
-				{ amount: 40000, label: 'left' },
+				{ amount: 10000, label: 'requested' },
+				{ amount: 40000, label: 'remain' },
 			],
 			amountType: 'bucket',
 			quota: exampleQuota,
-			total: 50000,
+			total: 60000,
 			unit: 'kgs',
 			bucketName: 'FCFS',
 			swappable: true,
 		},
 		{
-			data: [
+			transactions: [
 				{ amount: 20000, label: 'used' },
 				{
-					amount: 20000,
-					label: 'uncommited',
+					amount: 10000,
+					label: 'requested',
 				},
-				{ amount: 60000, label: 'left' },
+				{ amount: 60000, label: 'remain' },
 			],
 			amountType: 'bucket',
 			quota: exampleQuota,
@@ -317,9 +311,10 @@ export const BucketsMultiple = () => {
 			swappable: false,
 		},
 		{
-			data: [
-				{ amount: 20000, label: 'used' },
-				{ amount: 20000, label: 'left' },
+			transactions: [
+				{ amount: 0, label: 'used' },
+				{ amount: 10000, label: 'requested' },
+				{ amount: 30000, label: 'remain' },
 			],
 			amountType: 'bucket',
 			quota: exampleQuota,
@@ -330,17 +325,17 @@ export const BucketsMultiple = () => {
 		},
 	];
 
-	const bucketListData: BucketListItem = buckets.map((bucket, index) => {
-		return {
-			label: ` ${bucket.bucketName} ${
-				bucket.swappable ? '' : '(Unavailable)'
-			} - ${bucket.data
-				.filter((item) => item.label === 'left')[0]
-				.amount.toLocaleString()} ${bucket.unit}`,
-			value: index,
-			disabled: !bucket.swappable,
-		};
-	});
+	const bucketListtransactions: BucketListItem = buckets.map(
+		(bucket, index) => {
+			return {
+				label: ` ${bucket.bucketName} ${
+					bucket.swappable ? '' : '(Unavailable)'
+				}`,
+				value: index,
+				disabled: !bucket.swappable,
+			};
+		}
+	);
 
 	return (
 		<Columns
@@ -349,7 +344,7 @@ export const BucketsMultiple = () => {
 		>
 			<AmountBars
 				{...buckets[bucketIndex]}
-				bucketList={bucketListData}
+				bucketList={bucketListtransactions}
 				swapping={showBucketList}
 				startSwap={() => setBucketList(!showBucketList)}
 				currentBucket={bucketIndex}
@@ -365,10 +360,20 @@ export const BucketsMultiple = () => {
 export const BucketFull = () => (
 	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
 		<AmountBars
-			data={[
-				{ amount: 100000, label: 'used' },
-				{ amount: 0, label: 'left' },
-			]}
+			transactions={[{ amount: 100000, label: 'used' }]}
+			amountType={'bucket'}
+			quota={exampleQuota}
+			total={100000}
+			unit={'kgs'}
+			bucketName={'Josh Pty Ltd'}
+		/>
+	</Columns>
+);
+
+export const BucketEmpty = () => (
+	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
+		<AmountBars
+			transactions={[{ amount: 100000, label: 'left' }]}
 			amountType={'bucket'}
 			quota={exampleQuota}
 			total={100000}
@@ -381,9 +386,9 @@ export const BucketFull = () => (
 export const BucketClosed = () => (
 	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
 		<AmountBars
-			data={[
+			transactions={[
 				{ amount: 50000, label: 'used' },
-				{ amount: 0, label: 'left' },
+				{ amount: 50000, label: 'left' },
 			]}
 			amountType={'bucket'}
 			quota={exampleQuota}
@@ -398,12 +403,12 @@ export const BucketClosed = () => (
 export const QuotaSetup = () => (
 	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
 		<AmountBars
-			data={[
+			transactions={[
 				{ amount: 10000, label: 'used' },
 				{ amount: 10000, label: 'used' },
 				{ amount: 10000, label: 'used' },
 				{ amount: 10000, label: 'used' },
-				{ amount: 60000, label: 'uncommited' },
+				{ amount: 60000, label: 'uncommitted' },
 			]}
 			amountType={'quota'}
 			quota={exampleQuota}
@@ -416,7 +421,7 @@ export const QuotaSetup = () => (
 export const QuotaClosed = () => (
 	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
 		<AmountBars
-			data={[
+			transactions={[
 				{ amount: 10000, label: 'used' },
 				{ amount: 10000, label: 'used' },
 				{ amount: 10000, label: 'used' },
@@ -431,6 +436,173 @@ export const QuotaClosed = () => (
 		/>
 	</Columns>
 );
+
+export const QuotaTable = () => {
+	const buckets = [
+		{
+			transactions: [
+				{ amount: 10000, label: 'used' },
+				{ amount: 10000, label: 'requested' },
+				{ amount: 40000, label: 'remain' },
+			],
+			amountType: 'bucket',
+			quota: exampleQuota,
+			total: 30000,
+			unit: 'kgs',
+			bucketName: 'FCFS',
+			swappable: true,
+		},
+		{
+			transactions: [
+				{ amount: 20000, label: 'used' },
+				{
+					amount: 10000,
+					label: 'requested',
+				},
+				{ amount: 60000, label: 'remain' },
+			],
+			amountType: 'bucket',
+			quota: exampleQuota,
+			total: 30000,
+			unit: 'kgs',
+			bucketName: 'Josh Pty Ltd',
+			swappable: false,
+		},
+		{
+			transactions: [
+				{ amount: 0, label: 'used' },
+				{ amount: 10000, label: 'requested' },
+				{ amount: 30000, label: 'remain' },
+			],
+			amountType: 'bucket',
+			quota: exampleQuota,
+			total: 30000,
+			unit: 'kgs',
+			bucketName: 'Peter Pty Ltd',
+			swappable: true,
+		},
+	];
+
+	const sampleRows = buckets.map((bucket, index) => {
+		return {
+			name: bucket.bucketName,
+			id: index,
+			access: 'Single Exporter',
+			accessAmount: bucket.total,
+			balance: 10000,
+			left: 20000,
+		};
+	});
+
+	return (
+		<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
+			<AmountBars
+				transactions={[
+					{ amount: 10000, label: 'used' },
+					{ amount: 10000, label: 'used' },
+					{ amount: 10000, label: 'used' },
+					{ amount: 60000, label: 'left' },
+				]}
+				amountType={'quota'}
+				quota={exampleQuota}
+				total={90000}
+				unit={'kgs'}
+			/>
+			<BucketTable rows={sampleRows} unit={'TN'} />
+		</Columns>
+	);
+};
+
+export const QuotaRealWorldExamples = () => (
+	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
+		<AmountBars
+			transactions={[
+				//for mock up purposes, just dividing these amounts
+				{ amount: 2 * 10783, label: 'used' },
+				{ amount: 3 * 10783, label: 'used' },
+				{ amount: 3 * 10783, label: 'used' },
+				{ amount: 4 * 10783, label: 'used' },
+				{ amount: 0.5 * 10783, label: 'used' },
+				{ amount: 0.5 * 10783, label: 'used' },
+				{ amount: 3 * 10783 + 100, label: 'used' },
+
+				{ amount: 449292, label: 'left' },
+			]}
+			amountType={'quota'}
+			quota={{
+				market: 'ID',
+				quotaCode: 'LIVEC',
+				periodEnd: '23',
+				agreementCode: 'IAC',
+			}}
+			total={621920}
+			unit={'head'}
+		/>
+		<AmountBars
+			transactions={[
+				{ amount: 1990, label: 'used' },
+				{ amount: 8010, label: 'left' },
+			]}
+			amountType={'quota'}
+			quota={{
+				market: 'ID',
+				quotaCode: 'POTAT',
+				periodEnd: '23',
+				agreementCode: 'IAC',
+			}}
+			total={10000}
+			unit={'TN'}
+		/>
+		<AmountBars
+			transactions={[{ amount: 5000, label: 'left' }]}
+			amountType={'quota'}
+			quota={{
+				market: 'ID',
+				quotaCode: 'CARRO',
+				periodEnd: '23',
+				agreementCode: 'IAC',
+			}}
+			total={5000}
+			unit={'TN'}
+		/>
+		<AmountBars
+			transactions={[
+				{ amount: 1816, label: 'used' },
+				{ amount: 9209, label: 'left' },
+			]}
+			amountType={'quota'}
+			quota={{
+				market: 'ID',
+				quotaCode: 'ORANG',
+				periodEnd: '23',
+				agreementCode: 'IAC',
+			}}
+			total={11025}
+			unit={'TN'}
+		/>
+		<AmountBars
+			transactions={[{ amount: 551250, label: 'uncommitted' }]}
+			amountType={'quota'}
+			quota={{
+				market: 'ID',
+				quotaCode: 'FEEDG',
+				periodEnd: '23',
+				agreementCode: 'IAC',
+			}}
+			total={551250}
+			unit={'TN'}
+		/>
+	</Columns>
+);
+
+// Example QuotaToken props
+
+const exampleQuota = {
+	market: 'EU',
+	quotaCode: 'BUFFM',
+	periodEnd: '23',
+	agreementCode: 'FTA',
+};
 
 // STYLE TOKENS
 
@@ -459,6 +631,12 @@ const DiagonalAlt = {
 		'repeating-linear-gradient( 45deg, #026846, #026846 1.5px, rgba(229,229,247,0) 1.5px, rgba(229,229,247,0) 10px )',
 };
 
+const DiagonalSuccessAlt = {
+	'background-color': 'rgba(229,229,247,0)',
+	background:
+		'repeating-linear-gradient( 45deg, #1bc88e, #1bc88e 1.5px, rgba(229,229,247,0) 1.5px, rgba(229,229,247,0) 10px )',
+};
+
 const Dots = {
 	'background-color': 'rgba(159, 159, 171, 0.12)',
 	opacity: 0.5,
@@ -476,10 +654,12 @@ const Moon = {
 
 const BAR_COLOUR_TEXTURE = {
 	used: { colour: colours.success, texture: DiagonalAlt },
-	usedAlt: { colour: colours.successShade, texture: DiagonalAlt },
-	uncommited: { colour: colours.warning, texture: Diagonal },
+	usedAlt: { colour: colours.successShade, texture: DiagonalSuccessAlt },
+	uncommitted: { colour: colours.warning, texture: Diagonal },
 	closed: { colour: colours.altShade },
 	left: { colour: 'none', texture: {} },
+	remain: { colour: 'none', texture: {} },
+	requested: { colour: colours.warning, texture: Diagonal },
 };
 
 // The Amount Bar comes in two sizes, the smaller size is only used for buckets, the taller is used for Quota which represents many buckets
@@ -493,12 +673,20 @@ const BAR_HEIGHT = {
 
 const LABEL_FORMAT = {
 	used: { colour: 'success', weight: 'bold', text: 'Used' },
+	assigned: { colour: 'success', weight: 'bold', text: 'Assigned' },
+	assignedAlt: { colour: 'success', weight: 'bold', text: 'Assigned' },
 	usedAlt: { colour: 'success', weight: 'bold', text: 'Used' },
-	uncommited: { colour: 'warning', weight: 'bold', text: 'Uncommited' },
-	closed: { colour: colours.altShade, weight: undefined, text: 'Used' },
+	uncommitted: { colour: 'warning', weight: 'bold', text: 'Uncommitted' },
+	closed: { colour: colours.altShade, weight: 'normal', text: 'Used' },
 	left: {
-		colour: undefined,
-		weight: undefined,
-		text: 'Remains after processing',
+		colour: 'normal',
+		weight: 'normal',
+		text: 'Left',
 	},
+	remain: {
+		colour: 'normal',
+		weight: 'normal',
+		text: 'Remaining after processing',
+	},
+	requested: { colour: 'warning', weight: 'bold', text: 'Requested' },
 };
