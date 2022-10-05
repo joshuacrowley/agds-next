@@ -176,26 +176,28 @@ const AmountBars = ({
 						justifyContent={'space-between'}
 						alignItems={'center'}
 					>
-						<Flex alignItems={'baseline'} flexDirection={'row'}>
-							{swapping ? (
-								<Select
-									maxWidth="xl"
-									required
-									autoFocus
-									onChange={(event) => swapped(event.currentTarget.value)}
-									onBlur={(event) => swapped(event.currentTarget.value)}
-									options={bucketList}
-									value={currentBucket}
-								/>
-							) : (
-								<Button variant={'text'} onClick={startSwap}>
-									<Text color={swappable ? 'action' : 'text'} fontSize={'md'}>
-										{bucketName}
-									</Text>
-									{swappable && <ChevronDownIcon />}
-								</Button>
-							)}
-						</Flex>
+						{amountType === 'bucket' && (
+							<Flex alignItems={'baseline'} flexDirection={'row'}>
+								{swapping ? (
+									<Select
+										maxWidth="xl"
+										required
+										autoFocus
+										onChange={(event) => swapped(event.currentTarget.value)}
+										onBlur={(event) => swapped(event.currentTarget.value)}
+										options={bucketList}
+										value={currentBucket}
+									/>
+								) : (
+									<Button variant={'text'} onClick={startSwap}>
+										<Text color={swappable ? 'action' : 'text'} fontSize={'md'}>
+											{bucketName}
+										</Text>
+										{swappable && <ChevronDownIcon />}
+									</Button>
+								)}
+							</Flex>
+						)}
 						<QuotaToken shortHand {...quota} />
 					</Flex>
 					{data ? (
