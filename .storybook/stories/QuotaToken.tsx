@@ -1,24 +1,22 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Text } from '@ag.ds-next/text';
-import { Box, Flex, Stack } from '@ag.ds-next/box';
+import { Flex } from '@ag.ds-next/box';
+import { ArrowRightIcon } from '@ag.ds-next/icon';
+import { Button } from '@ag.ds-next/button';
 
 export default {
 	title: 'Quota/QuotaToken',
 };
 
-const responsiveFontSizes = {
-	sm: 'lg',
-	xs: 'lg',
-	md: 'xl',
-	lg: 'xl',
-	xl: 'xl',
-};
-const responsiveFontSizesAlt = {
-	sm: 'md',
-	xs: 'md',
-	md: 'lg',
-	lg: 'lg',
-	xl: 'lg',
+export type QuotaTokenProps = {
+	market: string;
+	quota?: string;
+	quotaCode?: string;
+	agreementCode?: string;
+	periodEnd?: string;
+	periodTerm?: string;
+	shortHand?: boolean;
+	size: 'sm' | 'lg';
+	link?: string;
 };
 
 export const QuotaToken = ({
@@ -28,54 +26,96 @@ export const QuotaToken = ({
 	periodEnd,
 	agreementCode,
 	periodTerm,
-	shortHand,
-}) =>
-	shortHand ? (
-		<Flex gap={0.25} alignItems={'center'}>
-			<Text fontSize={'sm'} fontWeight={'bold'}>
-				{market}
-			</Text>
-			<Text fontSize={'xs'}>/</Text>
-			<Text fontSize={'sm'}>{quotaCode}</Text>
-			<Text fontSize={'xs'}>/</Text>
-			{agreementCode && (
-				<>
-					<Text fontSize={'sm'}>{agreementCode}</Text>
-					<Text fontSize={'xs'}>/</Text>
-				</>
-			)}
-			<Text fontSize={'sm'}>{periodEnd}</Text>
-		</Flex>
-	) : (
-		<Flex gap={0.25} alignItems={'center'}>
-			<Text fontSize={responsiveFontSizes} fontWeight={'bold'}>
-				{market}
-			</Text>
-			<Text fontSize={responsiveFontSizesAlt}>/</Text>
-			<Text fontSize={responsiveFontSizes}>{quota}</Text>
-			<Text fontSize={responsiveFontSizesAlt}>/</Text>
-			{agreementCode && (
-				<>
-					<Text fontSize={responsiveFontSizes}>{agreementCode}</Text>
-					<Text fontSize={responsiveFontSizesAlt}>/</Text>
-				</>
-			)}
-			<Text fontSize={responsiveFontSizes}>
-				<span style={{ fontWeight: 200 }}>{periodTerm}</span>
-			</Text>
-		</Flex>
-	);
+	size,
+	link,
+}: QuotaToken) => (
+	<>
+		{quotaCode ? (
+			<Flex gap={0.25} alignItems={'center'}>
+				<Text fontSize={size} fontWeight={'bold'}>
+					{market}
+				</Text>
+				<Text fontSize={size}>/</Text>
+				<Text color={link ? 'action' : 'text'} fontSize={size}>
+					{quotaCode}
+				</Text>
+				<Text fontSize={size}>/</Text>
+				{agreementCode && (
+					<>
+						<Text color={link ? 'action' : 'text'} fontSize={size}>
+							{agreementCode}
+						</Text>
+						<Text color={link ? 'action' : 'text'} fontSize={size}>
+							/
+						</Text>
+					</>
+				)}{' '}
+				<Text color={link ? 'action' : 'text'} fontSize={size}>
+					{periodEnd}
+				</Text>
+				{link && <ArrowRightIcon color={'action'} />}
+			</Flex>
+		) : (
+			<Flex gap={0.25} alignItems={'center'}>
+				<Text
+					color={link ? 'action' : 'text'}
+					fontSize={size}
+					fontWeight={'bold'}
+				>
+					{market}
+				</Text>
 
-export const ShortHand = () => (
-	<QuotaToken shortHand market={'EU'} quotaCode={'BUFFM'} periodEnd={'23'} />
-);
-export const ShortHandQuarters = () => (
-	<QuotaToken shortHand market={'EU'} quotaCode={'BUFFM'} periodEnd={'23Q2'} />
+				<Text fontSize={size}>/</Text>
+
+				<Text color={link ? 'action' : 'text'} fontSize={size}>
+					{quota}
+				</Text>
+				<Text fontSize={size}>/</Text>
+				{agreementCode && (
+					<>
+						<Text color={link ? 'action' : 'text'} fontSize={size}>
+							{agreementCode}
+						</Text>
+						<Text color={link ? 'action' : 'text'} fontSize={size}>
+							/
+						</Text>
+					</>
+				)}
+				<Text color={link ? 'action' : 'text'} fontSize={size}>
+					<span style={{ fontWeight: 200 }}>{periodTerm}</span>
+				</Text>
+				{link && <ArrowRightIcon color="action" />}
+			</Flex>
+		)}
+	</>
 );
 
-export const ShortHandQuartersAgreement = () => (
+export const CodeSmall = () => (
+	<QuotaToken size={'sm'} market={'EU'} quotaCode={'BUFFM'} periodEnd={'23'} />
+);
+
+export const CodeSmallLink = () => (
 	<QuotaToken
-		shortHand
+		size={'sm'}
+		link={'#'}
+		market={'EU'}
+		quotaCode={'BUFFM'}
+		periodEnd={'23'}
+	/>
+);
+export const CodeWithQuarterPeriod = () => (
+	<QuotaToken
+		size={'sm'}
+		market={'EU'}
+		quotaCode={'BUFFM'}
+		periodEnd={'23Q2'}
+		link={'#'}
+	/>
+);
+
+export const AgreementSmall = () => (
+	<QuotaToken
+		size={'sm'}
 		market={'EU'}
 		quotaCode={'BUFFM'}
 		periodEnd={'23Q2'}
@@ -83,8 +123,9 @@ export const ShortHandQuartersAgreement = () => (
 	/>
 );
 
-export const LongHand = () => (
+export const Large = () => (
 	<QuotaToken
+		size={'lg'}
 		market={'EU'}
 		quota={'Buffalo Meat'}
 		agreementCode={'FTA'}

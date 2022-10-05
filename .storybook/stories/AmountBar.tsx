@@ -3,7 +3,7 @@ import { Text } from '@ag.ds-next/text';
 import { Stack, Box, Flex } from '@ag.ds-next/box';
 import { Button } from '@ag.ds-next/button';
 
-import { QuotaToken } from './QuotaToken';
+import { QuotaToken, QuotaTokenProps } from './QuotaToken';
 import { Columns, Column } from '@ag.ds-next/columns';
 import { Select } from '@ag.ds-next/select';
 import { ArrowRightIcon, ChevronDownIcon } from '@ag.ds-next/icon';
@@ -12,21 +12,15 @@ import { BucketTable } from './BucketTable';
 
 export default {
 	title: 'Quota/AmountBars',
+	component: AmountBars,
 };
 
-type barCharttransactions = {
+type barChartTransactions = {
 	amount: number;
 	label: 'used' | 'uncommitted' | 'left' | 'closed' | 'remain' | 'requested';
 };
 
 type unit = 'kgs' | 'TNs' | 'head';
-
-type quotaToken = {
-	market: string;
-	quotaCode: string;
-	periodEnd: number;
-	agreementCode: string;
-};
 
 type BucketListItem = {
 	label: string;
@@ -35,23 +29,38 @@ type BucketListItem = {
 };
 
 type AmoutBarProps = {
+	/**
+     Are you expressing a bucket or quota
+     */
 	amountType: 'bucket' | 'quota';
+	/** Total access amount for the bucket or quota */
 	total: number;
+	/** what unit are the amounts in? */
 	unit: unit;
-	quota: quotaToken;
+	/** The quota token props */
+	quota: QuotaTokenProps;
+	/** If it's a bucket, what is it's name */
 	bucketName?: string;
-	transactions?: barCharttransactions[];
+	/** The transactions that we will display in the chart  */
+	transactions?: barChartTransactions[];
+	/** If the Quota has expired and this Quota or Bucket is now closed */
 	closed?: boolean;
+	/** If this is a bucket, and you're viewing on the certificate screen, you can swap this bucket for another eligible bucket  */
 	swappable?: boolean;
+	/** If this is a bucket, and you're viewing on the certificate screen, you can swap this bucket for another eligible bucket  */
 	swapped?: Function;
+	/** If this is a bucket, and you're viewing on the certificate screen, you can swap this bucket for another eligible bucket  */
 	swapping?: boolean;
+	/** If this is a bucket, and you're viewing on the certificate screen, you can swap this bucket for another eligible bucket  */
 	bucketList?: BucketListItem[];
+	/** List of buckets to swap against  */
 	startSwap?: Function;
+	/** Currently selected Bucket */
 	currentBucket?: number;
 };
 
-type Bartransactions = {
-	transactions: barCharttransactions[];
+type BarTransactions = {
+	transactions: barChartTransactions[];
 	height: number;
 	amountType: 'bucket' | 'quota';
 	closed: boolean;
@@ -81,15 +90,15 @@ const AmountBars = ({
 
 	let quotaTotalUsedAmount: number = 0;
 	let quotaFilterAmounts,
-		fixedtransactions: barCharttransactions[] = [];
+		fixedtransactions: barChartTransactions[] = [];
 
 	if (amountType === 'quota') {
 		// When we're showing a Quota Amount Type, we sum all the bucket 'Used' amounts into a single total amount so it's easier to read.
 
 		quotaTotalUsedAmount = transactions
-			.filter((item: barCharttransactions) => item.label === 'used')
+			.filter((item: barChartTransactions) => item.label === 'used')
 			.reduce(
-				(accumulator: number, item: barCharttransactions) =>
+				(accumulator: number, item: barChartTransactions) =>
 					accumulator + item.amount,
 				0
 			);
@@ -97,7 +106,7 @@ const AmountBars = ({
 		// Get all the amounts for the other categories
 
 		quotaFilterAmounts = transactions.filter(
-			(item: barCharttransactions) => item.label != 'used'
+			(item: barChartTransactions) => item.label != 'used'
 		);
 
 		// transactions object to be used for the Quota AmountType
@@ -117,7 +126,7 @@ const AmountBars = ({
 		height,
 		amountType,
 		closed,
-	}: Bartransactions) => (
+	}: BarTransactions) => (
 		<Flex
 			justifyContent={'flex-start'}
 			alignItems={'stretch'}
@@ -194,7 +203,10 @@ const AmountBars = ({
 								)}
 							</Flex>
 						)}
-						<QuotaToken shortHand {...quota} />
+						<QuotaToken
+							size={amountType === 'bucket' ? 'sm' : 'lg'}
+							{...quota}
+						/>
 					</Flex>
 					{transactions ? (
 						<Bar
@@ -325,7 +337,7 @@ export const BucketsCertificate = () => {
 		},
 	];
 
-	const bucketListtransactions: BucketListItem = buckets.map(
+	const bucketListTransactions: BucketListItem = buckets.map(
 		(bucket, index) => {
 			return {
 				label: ` ${bucket.bucketName} ${
@@ -344,7 +356,7 @@ export const BucketsCertificate = () => {
 		>
 			<AmountBars
 				{...buckets[bucketIndex]}
-				bucketList={bucketListtransactions}
+				bucketList={bucketListTransactions}
 				swapping={showBucketList}
 				startSwap={() => setBucketList(!showBucketList)}
 				currentBucket={bucketIndex}
@@ -411,7 +423,12 @@ export const QuotaSetup = () => (
 				{ amount: 60000, label: 'uncommitted' },
 			]}
 			amountType={'quota'}
-			quota={exampleQuota}
+			quota={{
+				market: 'EU',
+				quota: 'Buffalo Meat',
+				agreementCode: 'FTA',
+				periodTerm: 'JUL22-JUN23',
+			}}
 			total={100000}
 			unit={'kgs'}
 		/>
