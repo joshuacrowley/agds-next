@@ -252,7 +252,7 @@ const AmountBars = ({
 								))}
 						</Flex>
 						<Text fontSize={'xs'}>
-							Total available: {total.toLocaleString()} {unit}
+							Total: {total.toLocaleString()} {unit}
 						</Text>
 					</Flex>
 				</Stack>
