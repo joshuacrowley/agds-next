@@ -5,11 +5,14 @@ import { Button } from '@ag.ds-next/button';
 import { Modal } from '@ag.ds-next/modal';
 import { QuotaToken } from './QuotaToken';
 import { Columns, Column } from '@ag.ds-next/columns';
+import { Select } from '@ag.ds-next/select';
 import {
 	ArrowRightIcon,
 	ProgressDoneIcon,
 	ProgressTodoIcon,
+	ChevronDownIcon,
 } from '@ag.ds-next/icon';
+import { values } from '../../docs/vendors~main.6781d4e4e2e81bd13b5e.manager.bundle';
 
 export default {
 	title: 'Quota/AmountBars',
@@ -29,17 +32,26 @@ type quotaToken = {
 	agreementCode: string;
 };
 
+type BucketListItem = {
+	label: string;
+	value: string;
+	disabled?: boolean;
+};
+
 type AmoutBarProps = {
-	data?: barChartData[];
+	amountType: 'bucket' | 'quota';
 	total: number;
 	unit: unit;
 	quota: quotaToken;
-	amountType: 'bucket' | 'quota';
-	bucketName: string;
+	bucketName?: string;
+	data?: barChartData[];
 	closed?: boolean;
 	swappable?: boolean;
 	swapped?: Function;
 	swapping?: boolean;
+	bucketList?: BucketListItem[];
+	startSwap?: Function;
+	currentBucket?: number;
 };
 
 type BarData = {
@@ -67,6 +79,9 @@ const AmountBars = ({
 	closed,
 	swapping,
 	swapped,
+	startSwap,
+	bucketList,
+	currentBucket,
 }: AmoutBarProps) => {
 	//Helper function to express amounts as percentages, using LocaleString for formatting
 
@@ -159,27 +174,29 @@ const AmountBars = ({
 					<Flex
 						width={'100%'}
 						justifyContent={'space-between'}
-						alignItems={'baseline'}
+						alignItems={'center'}
 					>
 						<Flex alignItems={'baseline'} flexDirection={'row'}>
-							<QuotaToken shortHand {...quota} />{' '}
-							{amountType === 'bucket' && (
-								<Text>
-									{`: `}
-									{bucketName}
-								</Text>
+							{swapping ? (
+								<Select
+									maxWidth="xl"
+									required
+									autoFocus
+									onChange={(event) => swapped(event.currentTarget.value)}
+									onBlur={(event) => swapped(event.currentTarget.value)}
+									options={bucketList}
+									value={currentBucket}
+								/>
+							) : (
+								<Button variant={'text'} onClick={startSwap}>
+									<Text color={swappable ? 'action' : 'text'} fontSize={'md'}>
+										{bucketName}
+									</Text>
+									{swappable && <ChevronDownIcon />}
+								</Button>
 							)}
 						</Flex>
-						{swappable && (
-							<Button
-								iconAfter={swapping ? ProgressTodoIcon : ProgressDoneIcon}
-								onClick={() => swapped()}
-								variant="text"
-								disabled={!swapping}
-							>
-								{swapping ? 'Select' : 'Selected'}
-							</Button>
-						)}
+						<QuotaToken shortHand {...quota} />
 					</Flex>
 					{data ? (
 						<Bar
@@ -271,6 +288,18 @@ export const BucketsMultiple = () => {
 	const buckets = [
 		{
 			data: [
+				{ amount: 10000, label: 'used' },
+				{ amount: 40000, label: 'left' },
+			],
+			amountType: 'bucket',
+			quota: exampleQuota,
+			total: 50000,
+			unit: 'kgs',
+			bucketName: 'FCFS',
+			swappable: true,
+		},
+		{
+			data: [
 				{ amount: 20000, label: 'used' },
 				{
 					amount: 20000,
@@ -283,50 +312,50 @@ export const BucketsMultiple = () => {
 			total: 100000,
 			unit: 'kgs',
 			bucketName: 'Josh Pty Ltd',
-			swappable: true,
+			swappable: false,
 		},
 		{
 			data: [
-				{ amount: 10000, label: 'used' },
-				{ amount: 40000, label: 'left' },
+				{ amount: 20000, label: 'used' },
+				{ amount: 20000, label: 'left' },
 			],
 			amountType: 'bucket',
 			quota: exampleQuota,
-			total: 50000,
+			total: 40000,
 			unit: 'kgs',
-			bucketName: 'FCFS',
+			bucketName: 'Peter Pty Ltd',
 			swappable: true,
 		},
 	];
+
+	const bucketListData: BucketListItem = buckets.map((bucket, index) => {
+		return {
+			label: ` ${bucket.bucketName} ${
+				bucket.swappable ? '' : '(Unavailable)'
+			} - ${bucket.data
+				.filter((item) => item.label === 'left')[0]
+				.amount.toLocaleString()} ${bucket.unit}`,
+			value: index,
+			disabled: !bucket.swappable,
+		};
+	});
 
 	return (
 		<Columns
 			cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}
 			alignItems={'flex-start'}
 		>
-			<Box
-				width={'100%'}
-				flexDirection={'row'}
-				justifyContent={'flex-end'}
-				display="block"
-			>
-				<Button variant="text" onClick={() => setBucketList(!showBucketList)}>
-					{showBucketList ? 'Cancel' : 'Change Selection'}
-				</Button>
-			</Box>
-			{showBucketList &&
-				buckets.map((bucket, index) => (
-					<AmountBars
-						{...bucket}
-						swapped={() => {
-							setBucketIndex(index);
-							setBucketList(false);
-						}}
-						swapping={showBucketList}
-					/>
-				))}
-
-			{!showBucketList && <AmountBars {...buckets[bucketIndex]} />}
+			<AmountBars
+				{...buckets[bucketIndex]}
+				bucketList={bucketListData}
+				swapping={showBucketList}
+				startSwap={() => setBucketList(!showBucketList)}
+				currentBucket={bucketIndex}
+				swapped={(index: number) => {
+					setBucketIndex(index);
+					setBucketList(false);
+				}}
+			/>
 		</Columns>
 	);
 };
