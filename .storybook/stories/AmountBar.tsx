@@ -10,11 +10,6 @@ import { ArrowRightIcon, ChevronDownIcon } from '@ag.ds-next/icon';
 
 import { BucketTable } from './BucketTable';
 
-export default {
-	title: 'Quota/AmountBars',
-	component: AmountBars,
-};
-
 type barChartTransactions = {
 	amount: number;
 	label: 'used' | 'uncommitted' | 'left' | 'closed' | 'remain' | 'requested';
@@ -261,21 +256,30 @@ const AmountBars = ({
 	);
 };
 
-export const BucketStandard = () => (
+const exampleQuota = {
+	market: 'EU',
+	quotaCode: 'BUFFM',
+	periodEnd: '23',
+	agreementCode: 'FTA',
+};
+
+export const BucketStandardConfigurable = (args) => (
 	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
-		<AmountBars
-			transactions={[
-				{ amount: 40000, label: 'used' },
-				{ amount: 60000, label: 'left' },
-			]}
-			amountType={'bucket'}
-			quota={exampleQuota}
-			total={100000}
-			unit={'kgs'}
-			bucketName={'Josh Pty Ltd'}
-		/>
+		<AmountBars {...args} amountType={'bucket'} />
 	</Columns>
 );
+
+BucketStandardConfigurable.args = {
+	transactions: [
+		{ amount: 40000, label: 'used' },
+		{ amount: 60000, label: 'left' },
+	],
+	quota: exampleQuota,
+	total: 100000,
+	unit: 'kgs',
+	bucketName: 'Josh Pty Ltd',
+	closed: false,
+};
 
 export const BucketNoAccount = () => (
 	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
@@ -412,28 +416,29 @@ export const BucketClosed = () => (
 	</Columns>
 );
 
-export const QuotaSetup = () => (
+export const QuotaSetupConfigurable = (args) => (
 	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
-		<AmountBars
-			transactions={[
-				{ amount: 10000, label: 'used' },
-				{ amount: 10000, label: 'used' },
-				{ amount: 10000, label: 'used' },
-				{ amount: 10000, label: 'used' },
-				{ amount: 60000, label: 'uncommitted' },
-			]}
-			amountType={'quota'}
-			quota={{
-				market: 'EU',
-				quota: 'Buffalo Meat',
-				agreementCode: 'FTA',
-				periodTerm: 'JUL22-JUN23',
-			}}
-			total={100000}
-			unit={'kgs'}
-		/>
+		<AmountBars {...args} amountType={'quota'} />
 	</Columns>
 );
+
+QuotaSetupConfigurable.args = {
+	transactions: [
+		{ amount: 10000, label: 'used' },
+		{ amount: 10000, label: 'used' },
+		{ amount: 10000, label: 'used' },
+		{ amount: 10000, label: 'used' },
+		{ amount: 60000, label: 'uncommitted' },
+	],
+	quota: {
+		market: 'EU',
+		quota: 'Buffalo Meat',
+		agreementCode: 'FTA',
+		periodTerm: 'JUL22-JUN23',
+	},
+	total: 100000,
+	unit: 'kgs',
+};
 
 export const QuotaClosed = () => (
 	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
@@ -614,13 +619,6 @@ export const QuotaRealWorldExamples = () => (
 
 // Example QuotaToken props
 
-const exampleQuota = {
-	market: 'EU',
-	quotaCode: 'BUFFM',
-	periodEnd: '23',
-	agreementCode: 'FTA',
-};
-
 // STYLE TOKENS
 
 // These are colours from the design system
@@ -707,3 +705,23 @@ const LABEL_FORMAT = {
 	},
 	requested: { colour: 'warning', weight: 'bold', text: 'Requested' },
 };
+
+export default {
+	title: 'Quota/AmountBars',
+	component: AmountBars,
+	excludeStories: ['AmountBars'],
+	argTypes: {
+		amountType: { controls: { type: 'radio', options: ['bucket', 'quota'] } },
+		total: { control: { type: 'number' } },
+		unit: {
+			control: { type: 'radio', options: ['kgs', 'head', 'tns', 'ltrs'] },
+		},
+		quota: { control: 'object' },
+		bucketName: { control: 'text' },
+		transactions: { control: 'object' },
+		closed: { control: 'boolean' },
+		swappable: { control: 'boolean' },
+		swapping: { control: 'boolean' },
+		bucketList: { control: 'object' },
+	},
+} as ComponentMeta<typeof AmountBars>;

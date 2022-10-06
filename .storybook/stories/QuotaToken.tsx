@@ -1,11 +1,8 @@
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Text } from '@ag.ds-next/text';
 import { Flex } from '@ag.ds-next/box';
 import { ArrowRightIcon } from '@ag.ds-next/icon';
 import { Button } from '@ag.ds-next/button';
-
-export default {
-	title: 'Quota/QuotaToken',
-};
 
 export type QuotaTokenProps = {
 	market: string;
@@ -90,45 +87,72 @@ export const QuotaToken = ({
 	</>
 );
 
-export const CodeSmall = () => (
-	<QuotaToken size={'sm'} market={'EU'} quotaCode={'BUFFM'} periodEnd={'23'} />
+const Template: ComponentStory<typeof QuotaToken> = (args) => (
+	<QuotaToken {...args} />
 );
 
-export const CodeSmallLink = () => (
-	<QuotaToken
-		size={'sm'}
-		link={'#'}
-		market={'EU'}
-		quotaCode={'BUFFM'}
-		periodEnd={'23'}
-	/>
-);
-export const CodeWithQuarterPeriod = () => (
-	<QuotaToken
-		size={'sm'}
-		market={'EU'}
-		quotaCode={'BUFFM'}
-		periodEnd={'23Q2'}
-		link={'#'}
-	/>
-);
+export const CodeSmall = Template.bind({});
 
-export const AgreementSmall = () => (
-	<QuotaToken
-		size={'sm'}
-		market={'EU'}
-		quotaCode={'BUFFM'}
-		periodEnd={'23Q2'}
-		agreementCode={'FTA'}
-	/>
-);
+CodeSmall.args = {
+	size: 'sm',
+	market: 'EU',
+	quotaCode: 'BUFFM',
+	periodEnd: '23',
+};
 
-export const Large = () => (
-	<QuotaToken
-		size={'lg'}
-		market={'EU'}
-		quota={'Buffalo Meat'}
-		agreementCode={'FTA'}
-		periodTerm={'JUL22–JUN23'}
-	/>
-);
+export const CodeSmallLink = Template.bind({});
+
+CodeSmallLink.args = {
+	size: 'sm',
+	link: '#',
+	market: 'EU',
+	quotaCode: 'BUFFM',
+	periodEnd: '23',
+};
+
+export const CodeWithQuarterPeriod = Template.bind({});
+
+CodeWithQuarterPeriod.args = {
+	size: 'sm',
+	market: 'EU',
+	quotaCode: 'BUFFM',
+	periodEnd: '23Q2',
+	link: '#',
+};
+
+export const AgreementSmall = Template.bind({});
+
+AgreementSmall.args = {
+	size: 'sm',
+	market: 'EU',
+	quotaCode: 'BUFFM',
+	periodEnd: '23Q2',
+	agreementCode: 'FTA',
+};
+
+export const Large = Template.bind({});
+
+Large.args = {
+	size: 'lg',
+	market: 'EU',
+	quota: 'Buffalo Meat',
+	agreementCode: 'FTA',
+	periodTerm: 'JUL22–JUN23',
+};
+
+export default {
+	title: 'Quota/QuotaToken',
+	component: QuotaToken,
+	excludeStories: ['QuotaToken'],
+	argTypes: {
+		market: { control: 'text' },
+		quota: { control: 'text' },
+		quotaCode: { control: 'text' },
+		agreementCode: { control: 'text' },
+		periodTerm: { control: 'text' },
+		size: {
+			options: ['sm', 'md'],
+			control: { type: 'radio' },
+		},
+	},
+} as ComponentMeta<typeof QuotaToken>;
