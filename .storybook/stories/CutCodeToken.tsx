@@ -4,11 +4,7 @@ import { Box, Flex, Stack } from '@ag.ds-next/box';
 import { boxPalette, LinkProps } from '@ag.ds-next/core';
 import { CloseIcon } from '@ag.ds-next/icon';
 
-export default {
-	title: 'Quota/CutCode',
-};
-
-export const CutCode = ({ code, preservation, suffix, removeable }) => (
+export const CutCode = ({ code, preservation, suffix, removable }) => (
 	<Box
 		as={'span'}
 		display="inline-block"
@@ -34,7 +30,7 @@ export const CutCode = ({ code, preservation, suffix, removeable }) => (
 					</Text>
 				)}
 			</>
-			{removeable && (
+			{removable && (
 				<Stack
 					paddingLeft={0.25}
 					as={'span'}
@@ -47,16 +43,55 @@ export const CutCode = ({ code, preservation, suffix, removeable }) => (
 	</Box>
 );
 
-export const JustCode = () => <CutCode code={'1000'} />;
-
-export const Preservation = () => <CutCode code={'1000'} preservation={'C'} />;
-
-export const Suffix = () => <CutCode code={'1000'} suffix={'G'} />;
-
-export const All = () => (
-	<CutCode code={'1000'} suffix={'G'} preservation={'F'} />
+const Template: ComponentStory<typeof CutCode> = (args) => (
+	<CutCode {...args} />
 );
 
-export const Removeable = () => (
-	<CutCode code={'1000'} suffix={'G'} preservation={'F'} removeable />
-);
+export const JustCode = Template.bind({});
+
+JustCode.args = {
+	code: '1000',
+};
+
+export const PreservationExample = Template.bind({});
+
+PreservationExample.args = {
+	code: '1002',
+	preservation: 'C',
+};
+
+export const Suffix = Template.bind({});
+
+Suffix.args = {
+	code: '1001',
+	suffix: 'G',
+};
+
+export const All = Template.bind({});
+
+All.args = {
+	code: '1000',
+	suffix: 'G',
+	preservation: 'F',
+};
+
+export const Removable = Template.bind({});
+
+Removable.args = {
+	code: '1000',
+	suffix: 'G',
+	preservation: 'F',
+	removable: true,
+};
+
+export default {
+	title: 'Quota/CutCode',
+	component: CutCode,
+	excludeStories: ['CutCode'],
+	argTypes: {
+		code: { control: 'text' },
+		preservation: { control: 'text' },
+		suffix: { control: 'text' },
+		removable: { control: 'boolean' },
+	},
+} as ComponentMeta<typeof CutCode>;

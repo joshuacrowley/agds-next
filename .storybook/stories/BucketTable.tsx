@@ -7,9 +7,6 @@ import {
 } from '@ag.ds-next/table';
 
 import { Columns, Column } from '@ag.ds-next/columns';
-export default {
-	title: 'Quota/BucketTable',
-};
 
 type BucketRow = {
 	name: string;
@@ -138,4 +135,9 @@ export const BucketTableDefault = () => {
 			<BucketTable rows={sampleRows} unit={'TN'} />
 		</Columns>
 	);
+};
+
+export default {
+	title: 'Quota/BucketTable',
+	excludeStories: ['BucketTable'],
 };

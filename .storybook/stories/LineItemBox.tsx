@@ -116,6 +116,7 @@ export const Meat = () => {
 				commodity={'M'}
 				quotaToken={
 					<QuotaToken
+						size={'md'}
 						market={'EU'}
 						quota={'Lamb'}
 						agreementCode={'FTA'}
@@ -136,6 +137,7 @@ export const MeatAdjustment = () => {
 				adjustment
 				quotaToken={
 					<QuotaToken
+						size={'md'}
 						market={'EU'}
 						quota={'Lamb'}
 						agreementCode={'FTA'}
@@ -167,6 +169,7 @@ export const Oranges = () => {
 				commodity={'G'}
 				quotaToken={
 					<QuotaToken
+						size={'md'}
 						market={'ID'}
 						quota={'Oranges'}
 						periodTerm={'JUL22–JUN23'}
@@ -186,6 +189,7 @@ export const OrangesIssued = () => {
 				commodity={'G'}
 				quotaToken={
 					<QuotaToken
+						size={'md'}
 						market={'ID'}
 						quota={'Oranges'}
 						periodTerm={'JUL22–JUN23'}

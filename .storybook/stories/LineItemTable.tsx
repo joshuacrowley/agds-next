@@ -1,6 +1,7 @@
-import { Box, Flex, Stack } from '@ag.ds-next/box';
-import { useTernaryState } from '@ag.ds-next/core';
-import { Button } from '@ag.ds-next/button';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
+
+import { Flex } from '@ag.ds-next/box';
+
 import {
 	Table,
 	TableBody,
@@ -12,10 +13,6 @@ import {
 import { CutCode } from './CutCodeToken';
 import { ProductCode } from './ProductCodeToken';
 import { MatchedModal } from './MatchedModal';
-
-export default {
-	title: 'Quota/LineItemTable',
-};
 
 export const LineItemTable = ({
 	seeMatch,
@@ -223,3 +220,9 @@ export const Other = () => (
 		striped={rowSampleFruit.length > 5}
 	/>
 );
+
+export default {
+	title: 'Quota/LineItemTable',
+	component: LineItemTable,
+	excludeStories: ['LineItemTable'],
+} as ComponentMeta<typeof LineItemTable>;

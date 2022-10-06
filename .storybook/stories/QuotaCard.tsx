@@ -13,7 +13,7 @@ import { Breadcrumbs } from '@ag.ds-next/breadcrumbs';
 import { Button, ButtonGroup } from '@ag.ds-next/button';
 import { Callout } from '@ag.ds-next/callout';
 import { CallToActionLink } from '@ag.ds-next/call-to-action';
-import { Card, CardInner } from '@ag.ds-next/card';
+import { Card, CardHeader, CardFooter } from '@ag.ds-next/card';
 import { Columns, Column } from '@ag.ds-next/columns';
 import { PageContent } from '@ag.ds-next/content';
 import { ControlGroup, Checkbox, Radio } from '@ag.ds-next/control-input';
@@ -120,6 +120,7 @@ export const Active = () => (
 			activeDate={'01/01/2022'}
 			quotaToken={
 				<QuotaToken
+					size={'lg'}
 					market={'EU'}
 					quota={'Buffalo Meat'}
 					agreementCode={'FTA'}
@@ -136,6 +137,7 @@ export const NoQuotaPeriods = () => (
 			quotaPeriodStatus={'notSet'}
 			quotaToken={
 				<QuotaToken
+					size={'lg'}
 					market={'EU'}
 					quota={'Buffalo Meat'}
 					agreementCode={'FTA'}
@@ -153,6 +155,7 @@ export const noActiveQuotaPeriod = () => (
 			activeDate={'01/01/2021'}
 			quotaToken={
 				<QuotaToken
+					size={'lg'}
 					market={'EU'}
 					quota={'Buffalo Meat'}
 					agreementCode={'FTA'}

@@ -1,3 +1,4 @@
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 import {
 	Table,
 	TableBody,
@@ -7,11 +8,7 @@ import {
 } from '@ag.ds-next/table';
 
 import { QuotaToken, QuotaTokenProps } from './QuotaToken';
-
 import { Columns, Column } from '@ag.ds-next/columns';
-export default {
-	title: 'Quota/QuotaTable',
-};
 
 type QuotaRow = {
 	quota: QuotaTokenProps;
@@ -165,3 +162,9 @@ export const QuotaTableDefault = () => {
 		</Columns>
 	);
 };
+
+export default {
+	title: 'Quota/QuotaTable',
+	component: QuotaTable,
+	excludeStories: ['QuotaTable'],
+} as ComponentMeta<typeof QuotaTable>;
