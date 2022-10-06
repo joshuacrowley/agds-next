@@ -399,6 +399,71 @@ export const BucketEmpty = () => (
 	</Columns>
 );
 
+export const BucketFlipped = () => (
+	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
+		<AmountBars
+			transactions={[{ amount: 90000, label: 'used' }]}
+			amountType={'bucket'}
+			quota={exampleQuota}
+			total={100000}
+			unit={'kgs'}
+			bucketName={'Josh Pty Ltd'}
+		/>
+		<AmountBars
+			transactions={[{ amount: 75000, label: 'used' }]}
+			amountType={'bucket'}
+			quota={exampleQuota}
+			total={100000}
+			unit={'kgs'}
+			bucketName={'Josh Pty Ltd'}
+		/>
+		<AmountBars
+			transactions={[{ amount: 30000, label: 'used' }]}
+			amountType={'bucket'}
+			quota={exampleQuota}
+			total={100000}
+			unit={'kgs'}
+			bucketName={'Josh Pty Ltd'}
+		/>
+		<AmountBars
+			transactions={[{ amount: 0, label: 'used' }]}
+			amountType={'bucket'}
+			quota={exampleQuota}
+			total={100000}
+			unit={'kgs'}
+			bucketName={'Josh Pty Ltd'}
+		/>
+
+		<AmountBars
+			transactions={[
+				{ amount: 10000, label: 'used' },
+				{ amount: 10000, label: 'used' },
+				{ amount: 10000, label: 'used' },
+				{ amount: 10000, label: 'used' },
+				{ amount: 60000, label: 'left' },
+			]}
+			amountType={'quota'}
+			quota={exampleQuota}
+			total={100000}
+			unit={'kgs'}
+		/>
+
+		<AmountBars
+			transactions={[
+				{ amount: 10000, label: 'used' },
+				{ amount: 10000, label: 'used' },
+				{ amount: 10000, label: 'used' },
+				{ amount: 10000, label: 'used' },
+				{ amount: 60000, label: 'uncommitted' },
+			]}
+			amountType={'quota'}
+			quota={exampleQuota}
+			total={100000}
+			unit={'kgs'}
+		/>
+	</Columns>
+);
+
 export const BucketClosed = () => (
 	<Columns cols={{ xs: 2, sm: 6, md: 6, lg: 12, xl: 12 }}>
 		<AmountBars
@@ -687,7 +752,7 @@ const BAR_HEIGHT = {
 // We have different text styles for each of the possible bar states
 
 const LABEL_FORMAT = {
-	used: { colour: 'success', weight: 'bold', text: 'Used' },
+	used: { colour: 'success', weight: 'bold', text: 'Left' },
 	assigned: { colour: 'success', weight: 'bold', text: 'Assigned' },
 	assignedAlt: { colour: 'success', weight: 'bold', text: 'Assigned' },
 	usedAlt: { colour: 'success', weight: 'bold', text: 'Used' },
@@ -696,7 +761,7 @@ const LABEL_FORMAT = {
 	left: {
 		colour: 'normal',
 		weight: 'normal',
-		text: 'Left',
+		text: 'Used',
 	},
 	remain: {
 		colour: 'normal',
