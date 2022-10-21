@@ -47,7 +47,7 @@ export const TransferBucketModal = ({
 	});
 
 	return (
-		<Column key={bucketName} columnSpan={{ xs: 2, sm: 2, md: 2, lg: 2, xl: 2 }}>
+		<Column key={bucketName} columnSpan={{ xs: 2, sm: 2, md: 2, lg: 3, xl: 3 }}>
 			<Button block variant="secondary" onClick={openModal}>
 				Transfer to another Bucket
 			</Button>
