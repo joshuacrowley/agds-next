@@ -84,7 +84,7 @@ export type BucketCardProps = {
 	accessAmount: number;
 	exporterCount: number;
 	uncommitted?: boolean;
-	editLink: string;
+	editLink?: string;
 };
 
 export const BucketCard = ({

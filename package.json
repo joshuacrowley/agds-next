@@ -31,9 +31,7 @@
 		"playroom:dev": "yarn --cwd docs playroom:dev",
 		"playroom:build": "yarn --cwd docs playroom:build",
 		"storybook:dev": "start-storybook -p 6006",
-		"storybook:build": "build-storybook -o docs",
-		"deploy": "npx vercel deploy ./docs/public/storybook --prod",
-		"storybook:release": "yarn storybook:build && yarn deploy"
+		"storybook:build": "build-storybook -o docs"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.16.5",
