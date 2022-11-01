@@ -130,6 +130,8 @@ const AmountBars = ({
 			width={'100%'}
 			height={`${height}px`}
 			background={'shade'}
+			border
+			borderColor="black"
 		>
 			{transactions.map((bar, index) => {
 				//Grab design  tokens using index keys
@@ -153,6 +155,9 @@ const AmountBars = ({
 							backgroundColor: colour,
 							flexBasis: `${percent(bar.amount)}%`,
 							filter: `grayscale(${closed ? 1 : 0})`,
+							borderRight: `${
+								transactions.length === index + 1 ? '0' : '1'
+							}px black solid`,
 						}}
 					></div>
 				);
@@ -654,10 +659,9 @@ const DiagonalSuccessAlt = {
 
 const Dots = {
 	'background-color': 'rgba(159, 159, 171, 0.12)',
-	opacity: 0.5,
 	'background-image':
-		'radial-gradient(#000000 0.9px, rgba(159, 159, 171, 0.12) 0.9px)',
-	'background-size': '18px 18px',
+		'radial-gradient(#000000 0.5px, rgba(159, 159, 171, 0.12) 0.75px)',
+	'background-size': '4px 4px',
 };
 
 const Moon = {
@@ -669,12 +673,12 @@ const Moon = {
 
 const BAR_COLOUR_TEXTURE = {
 	used: { colour: colours.success, texture: DiagonalAlt },
-	usedAlt: { colour: colours.successShade, texture: DiagonalSuccessAlt },
-	uncommitted: { colour: colours.warning, texture: Diagonal },
+	usedAlt: { colour: colours.success, texture: DiagonalSuccessAlt },
+	uncommitted: { colour: colours.warning, texture: Dots },
 	closed: { colour: colours.altShade },
 	left: { colour: 'none', texture: {} },
 	remain: { colour: 'none', texture: {} },
-	requested: { colour: colours.warning, texture: Diagonal },
+	requested: { colour: colours.warning, texture: Dots },
 };
 
 // The Amount Bar comes in two sizes, the smaller size is only used for buckets, the taller is used for Quota which represents many buckets
