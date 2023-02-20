@@ -1,5 +1,11 @@
 # @ag.ds-next/react
 
+## 1.2.1
+
+### Patch Changes
+
+- 1f7b6dafc: Avatar: Fix shrinking bug
+
 ## 1.2.0
 
 ### Minor Changes
