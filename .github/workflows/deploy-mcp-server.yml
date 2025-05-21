@@ -1,0 +1,72 @@
+name: Deploy Design System MCP Server
+
+on:
+  push:
+    branches: [ main ] # Or your default branch
+  schedule:
+    - cron: '0 0 * * *'  # Daily at midnight to keep docs updated
+
+jobs:
+  build-and-deploy-mcp:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # Updated to v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4 # Updated to v4
+        with:
+          node-version: '18' # As specified in the guide
+
+      - name: Install project dependencies
+        run: npm install # This will install dependencies from package.json
+
+      - name: Clone Design System Repository
+        run: |
+          # Ensure the target directory 'design-system' is clean or doesn't exist if git clone complains
+          rm -rf design-system 
+          git clone ${{ secrets.DESIGN_SYSTEM_REPO_URL }} design-system
+        env:
+          DESIGN_SYSTEM_REPO_URL: ${{ secrets.DESIGN_SYSTEM_REPO_URL }}
+          # Note: If the repo is private, the token used for checkout might need access,
+          # or DESIGN_SYSTEM_REPO_URL might need to include an access token.
+          # For public repos, this is fine.
+
+      - name: Process Markdown Files
+        run: node scripts/process-markdown.js
+        # This script expects the cloned repo at '../design-system' relative to its own path,
+        # which is 'design-system' at the root of the checkout. This matches.
+
+      - name: Generate Search Index
+        run: node scripts/generate-index.js
+        # This script reads from 'dist/docs' and writes to 'dist/'
+
+      # Before uploading to KV or deploying, ensure Wrangler is configured.
+      # The wrangler-action below might handle login, but explicit configuration can be clearer.
+      # However, upload-to-kv.js uses wrangler CLI directly.
+      # So, we need Wrangler installed and logged in.
+      # The cloudflare/wrangler-action can be used to run commands or just for deployment.
+      # Let's ensure wrangler is available for the upload script.
+      - name: Install Wrangler CLI
+        run: npm install -g wrangler
+
+      - name: Configure Cloudflare API Token for Wrangler CLI
+        run: echo "CLOUDFLARE_API_TOKEN=${{ secrets.CLOUDFLARE_API_TOKEN }}" >> $GITHUB_ENV
+        # This makes the API token available as an environment variable for Wrangler commands
+
+      - name: Upload data to Cloudflare KV
+        run: node scripts/upload-to-kv.js
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # The script uses 'wrangler kv:key put', which needs authentication.
+          # Ensure wrangler.toml has the correct KV namespace ID for the binding 'DOCS_KV'.
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3 # Changed from v2 to v3 as in guide
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # The command 'wrangler publish' will be run by default by this action.
+          # It relies on wrangler.toml for configuration.
+          # The build command 'npm run build' from wrangler.toml will be executed.
+          # Ensure package.json has 'build' script defined.
+          # Ensure KV namespace ID in wrangler.toml is correctly set by the user.

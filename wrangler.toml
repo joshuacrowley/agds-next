@@ -1,0 +1,31 @@
+name = "design-system-mcp"
+main = "src/index.js" # Corrected to point to the entry point in the src directory
+compatibility_date = "2023-05-21" # Using the date from the guide, can be updated to a more recent one
+
+[site]
+bucket = "./dist" # Specifies the directory for static assets, which includes processed docs and search indexes
+
+[build]
+command = "npm run build" # This script needs to be defined in package.json
+# It should handle bundling of the worker script and dependencies (like lunr)
+# and ensure that src/index.js can import lunr.
+# It might also involve copying assets from dist/ to a location accessible by the worker, if needed,
+# though 'site.bucket' should handle making ./dist available.
+
+[[kv_namespaces]]
+binding = "DOCS_KV"
+id = "your-kv-namespace-id" # IMPORTANT: This ID needs to be replaced with the actual KV namespace ID after creation.
+# preview_id = "your-kv-namespace-preview-id" # Also replace with actual preview ID
+
+# Add a plain text binding for the search index and doc store as an alternative way to load them if they are small
+# [[text_blob]]
+# binding = "SEARCH_INDEX_BLOB"
+# filename = "./dist/search-index.json"
+
+# [[text_blob]]
+# binding = "DOC_STORE_BLOB"
+# filename = "./dist/docs-store.json"
+
+# Ensure 'lunr' is part of the bundle. If 'npm run build' uses esbuild (common with Wrangler),
+# it should automatically bundle 'lunr' if it's a dependency in package.json and imported in src/index.js.
+# No specific [wasm_modules] or [experimental_services] needed unless using advanced features not mentioned.

@@ -11,9 +11,16 @@
 		"yourgov"
 	],
 	"scripts": {
-		"build": "preconstruct build",
+		"build": "echo \"Build step for worker (e.g., bundling) will be handled by 'wrangler publish' or can be customized here.\"",
 		"build-site": "concurrently 'yarn:*(!docs):build' --kill-others-on-fail && yarn docs:build",
 		"clean": "rimraf \"**/node_modules\" \"**/yarn-error.log\" \"**/out.log\" \"**/.DS_Store\" \"**/dist\" \"**/out\" \"**/.next\"",
+		"process-docs": "node scripts/process-markdown.js",
+		"generate-search-index": "node scripts/generate-index.js",
+		"build-search-assets": "npm run process-docs && npm run generate-search-index",
+		"upload-kv": "node scripts/upload-to-kv.js",
+		"deploy": "wrangler publish",
+		"dev": "wrangler dev",
+		"mcp-full-update": "npm run build-search-assets && npm run upload-kv && npm run deploy",
 		"docs:build": "yarn --cwd docs build",
 		"docs:dev": "yarn --cwd docs dev",
 		"docs:generate-component-props": "yarn --cwd docs generate-component-props",
@@ -42,7 +49,14 @@
 		"yourgov:build": "yarn --cwd yourgov build",
 		"yourgov:dev": "yarn --cwd yourgov dev"
 	},
-	"devDependencies": {
+	"dependencies": {
+    "gray-matter": "^4.0.3",
+    "itty-router": "^4.0.23",
+    "lunr": "^2.3.9",
+    "marked": "^5.1.2"
+  },
+  "devDependencies": {
+		"wrangler": "^3.0.0",
 		"@babel/core": "^7.22.9",
 		"@babel/plugin-transform-runtime": "^7.22.9",
 		"@babel/preset-env": "^7.22.9",
